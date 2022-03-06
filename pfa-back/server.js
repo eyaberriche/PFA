@@ -6,14 +6,14 @@ var mongoose = require("mongoose");
 require("dotenv").config();
 //database connection
 
-
+// Middleware
+app.use(bodyParser.json());
 mongoose.connect(
- process.env.DB_CONECTION_STRING,
+  process.env.DB_CONECTION_STRING,
   { useNewUrlParser: true, useUnifiedTopology: true },
- (res,req)=>{
-  console.log("Connected Database Successfully");
- }
-  
+  (res, req) => {
+    console.log("Connected Database Successfully");
+  }
 );
 
 app.listen(port, () => {

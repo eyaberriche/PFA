@@ -26,6 +26,10 @@ let userSchema = new Schema({
     type: String,
     required: true,
   },
+  ispublic: {
+    type: Boolean,
+    default: false,
+  },
   cv: {
     type: mongoose.Schema.Types.Mixed,
   },
