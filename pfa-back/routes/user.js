@@ -7,3 +7,4 @@ var bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
 const freelancerController = require("../controllers/freelancerController");
 router.post("/competence", jsonParser, freelancerController.createCompetence);
+module.exports = router;

@@ -2,7 +2,7 @@
 var User = require("../models/user");
 var Competence = require("../models/competence");
 exports.createCompetence = async (req, res) => {
-  const freelancer = await User.findById({ _id: req.body._id });
+  const freelancer = await User.findOne({ _id: req.body.freelancer });
   let competence = new Competence({
     name: req.body.name,
     experience: req.body.experience,
