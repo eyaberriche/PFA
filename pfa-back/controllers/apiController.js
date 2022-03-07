@@ -1,6 +1,7 @@
 // lhajet l public kima login / sign up / affichage des profils
 const jwt = require("jsonwebtoken");
 var User = require("../models/user");
+var Category = require("../models/category");
 var bcrypt = require("bcrypt");
 
 exports.registerUser = async (req, res) => {
@@ -70,5 +71,37 @@ exports.logIn = (req, res) => {
           });
       }
     }
+  });
+};
+//creer une category
+exports.createCategroy = async (req, res) => {
+  let category = new Category({
+    name: req.body.name,
+  });
+  await category.save();
+  return res.json({ category });
+};
+
+//liste des categories
+exports.allCategories = async (req, res) => {
+  Category.find({}, function (err, categorys) {
+    /* var categoryMap = {};
+      categorys.forEach(function (category) {
+      categoryMap[category.name] = category;
+    });*/
+
+    res.send(categorys);
+  });
+};
+//liste des utilisateurs par categorie
+exports.allCategories = async (req, res) => {
+  const user = await Users.findById(posts.userID);
+  Category.find({}, function (err, categorys) {
+    /* var categoryMap = {};
+      categorys.forEach(function (category) {
+      categoryMap[category.name] = category;
+    });*/
+
+    res.send(categorys);
   });
 };

@@ -9,5 +9,7 @@ const apiController = require("../controllers/apiController");
 
 router.post("/register", jsonParser, apiController.registerUser);
 router.post("/login", jsonParser, apiController.logIn);
+router.post("/category/create", jsonParser, apiController.createCategroy);
+router.get("/category/all", jsonParser, apiController.allCategories);
 
 module.exports = router;

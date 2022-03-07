@@ -5,12 +5,13 @@ let compSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   experience: {
     type: String,
     required: true,
   },
-  categorie: {
+  category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "category",
   },
