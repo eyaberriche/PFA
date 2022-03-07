@@ -8,6 +8,7 @@ require("dotenv").config();
 
 // all routes
 var apiRoutes = require("./routes/api");
+var userRoutes = require("./routes/user");
 //database
 mongoose.connect(
   process.env.DB_CONECTION_STRING,
@@ -19,6 +20,7 @@ mongoose.connect(
 
 // use all routes
 app.use("/", apiRoutes);
+app.use("/", userRoutes);
 // Middleware
 // some dependency=
 app.use(bodyParser.urlencoded({ extended: true }));
