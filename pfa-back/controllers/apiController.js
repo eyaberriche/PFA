@@ -1,6 +1,7 @@
 // lhajet l public kima login / sign up / affichage des profils
 const jwt = require("jsonwebtoken");
 var User = require("../models/user");
+var Competence = require("../models/competence");
 var Category = require("../models/category");
 var bcrypt = require("bcrypt");
 
@@ -11,6 +12,7 @@ exports.registerUser = async (req, res) => {
       firstname: req.body.firstname,
       email: req.body.email,
       password: hash,
+      role: "user",
     });
 
     User.find({ email: req.body.email }, (err, users) => {
@@ -27,7 +29,10 @@ exports.registerUser = async (req, res) => {
             console.log(error);
             res.json({ msg: "some error!" });
           } else {
-            let payload = { subject: registeredUser._id };
+            let payload = {
+              subject: registeredUser._id,
+              role: registeredUser.role,
+            };
             let token = jwt.sign(payload, "secretkey");
             res.status(200).json({ token: token });
           }
@@ -52,13 +57,17 @@ exports.logIn = (req, res) => {
           .then((match) => {
             if (match) {
               console.log("login sucesssss");
-              let payload = { subject: user._id, email: user.email };
+              let payload = {
+                id: user._id,
+                email: user.email,
+                role: user.role,
+              };
               let token = jwt.sign(payload, "secretkey");
               res.status(200).json({
                 token: token,
                 email: user.email,
                 lastname: user.lastname,
-                firstname: user.firstname,
+                role: user.role,
               });
             } else {
               console.log("incoreect passss");
@@ -79,29 +88,26 @@ exports.createCategroy = async (req, res) => {
     name: req.body.name,
   });
   await category.save();
-  return res.json({ category });
+  return res.json(category);
 };
 
 //liste des categories
 exports.allCategories = async (req, res) => {
   Category.find({}, function (err, categorys) {
-    /* var categoryMap = {};
-      categorys.forEach(function (category) {
-      categoryMap[category.name] = category;
-    });*/
-
-    res.send(categorys);
+    res.json(categorys);
   });
 };
 //liste des utilisateurs par categorie
-exports.allCategories = async (req, res) => {
-  const user = await Users.findById(posts.userID);
-  Category.find({}, function (err, categorys) {
-    /* var categoryMap = {};
-      categorys.forEach(function (category) {
-      categoryMap[category.name] = category;
-    });*/
+exports.allUsersByCategory = async (req, res) => {
+  const category = await Category.findById(req.params.id);
+  var users = [];
+  Competence.find({ category: category._id }, function (err, competences) {
+    competences.forEach(async function (competence) {
+      const user = await User.findOne({ _id: competence.freelancer });
+      console.log(user);
+      users.push(user);
+    });
 
-    res.send(categorys);
+    res.send(users);
   });
 };

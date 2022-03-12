@@ -44,6 +44,13 @@ let userSchema = new Schema(
   },
   { timestamp: true }
 );
+userSchema.plugin(require("mongoose-role"), {
+  roles: ["user", "admin"],
+  accessLevels: {
+    user: ["user"],
+    admin: ["admin"],
+  },
+});
 
 userSchema.statics.hashPassword = function hashPassword(password) {
   return bcrypt.hashSync(password, 10);

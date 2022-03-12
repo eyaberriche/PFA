@@ -22,11 +22,6 @@ exports.createCompetence = async (req, res) => {
 exports.allComptences = async (req, res) => {
   const freelancer = await User.findOne({ _id: req.params.id });
   Competence.find({ freelancer: freelancer._id }, function (err, competences) {
-    var competencesuser = [];
-    competences.forEach(function (competence) {
-      competencesuser.push(competence.name);
-    });
-    console.log(competencesuser);
-    res.send(competencesuser);
+    res.send(competences);
   });
 };
