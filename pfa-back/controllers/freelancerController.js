@@ -2,6 +2,8 @@
 var User = require("../models/user");
 var Competence = require("../models/competence");
 var Category = require("../models/category");
+var Services = require("../models/service");
+
 // creation d'une competence
 exports.createCompetence = async (req, res) => {
   const freelancer = await User.findOne({ _id: req.body.freelancer });
@@ -25,3 +27,14 @@ exports.allComptences = async (req, res) => {
     res.send(competences);
   });
 };
+
+
+//afficher ses demandes
+exports.demandes = async (req, res) => {
+  const freelancer = await User.findOne({ _id: req.params.id });
+  Services.find({ freelancer: freelancer._id }, function (err, ser) {
+    res.send(ser);
+  });
+
+};
+

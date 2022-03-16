@@ -12,4 +12,11 @@ router.get(
   jsonParser,
   freelancerController.allComptences
 );
+
+//afficher ses demandes
+router.get(
+    "/demande/all/:id",
+    jsonParser,
+    freelancerController.demandes
+  );
 module.exports = router;
