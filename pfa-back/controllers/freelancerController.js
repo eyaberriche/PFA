@@ -28,13 +28,11 @@ exports.allComptences = async (req, res) => {
   });
 };
 
+//afficher mes todo
 
-//afficher ses demandes
-exports.demandes = async (req, res) => {
-  const freelancer = await User.findOne({ _id: req.params.id });
-  Services.find({ freelancer: freelancer._id }, function (err, ser) {
-    res.send(ser);
+exports.todoservices = async (req, res) => {
+  const freelancer = await User.findOne({ _id: req.userId });
+  Services.find({ freelancer: freelancer._id }, function (err, todo) {
+    res.send(todo);
   });
-
 };
-

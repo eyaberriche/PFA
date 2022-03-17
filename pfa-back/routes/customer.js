@@ -3,33 +3,51 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 var authJwt = require("../middleware/auth");
 
-
 var jsonParser = bodyParser.json();
 const customerController = require("../controllers/customerController");
 
-router.post("/service/:id", 
-jsonParser, 
-[authJwt.verifyToken, authJwt.isAdmin],
-customerController.createService);
-
-router.get(
-  "/service/all/:id",
+//ajouter et envoyer service a la fois
+router.post(
+  "/service/create/:id",
   jsonParser,
-  [authJwt.verifyToken, authJwt.isAdmin],
-  customerController.services
+  [authJwt.verifyToken, authJwt.isUser],
+  customerController.createService
 );
 
-router.put(
-    "/service/update/:id",
-    jsonParser,
-  [authJwt.verifyToken, authJwt.isAdmin],
-    customerController.update_service
-  );
+//enregistrer service
+router.post(
+  "/service/save/:id",
+  jsonParser,
+  [authJwt.verifyToken, authJwt.isUser],
+  customerController.enregistrerService
+);
 
-  router.delete(
-    "/service/delete/:id",
-    jsonParser,
+//envoyer service déja enregistré
+router.get(
+  "/service/send/:id",
+  jsonParser,
+  [authJwt.verifyToken, authJwt.isUser],
+  customerController.envoyerService
+);
+//afficher mes demandes
+router.get(
+  "/service/Requested",
+  jsonParser,
+  [authJwt.verifyToken, authJwt.isUser],
+  customerController.demandesServices
+);
+//update service
+router.put(
+  "/service/update/:id",
+  jsonParser,
   [authJwt.verifyToken, authJwt.isAdmin],
-    customerController.deleteServices
-  );
+  customerController.updateService
+);
+//delete service
+router.delete(
+  "/service/delete/:id",
+  jsonParser,
+  [authJwt.verifyToken, authJwt.isAdmin],
+  customerController.deleteService
+);
 module.exports = router;

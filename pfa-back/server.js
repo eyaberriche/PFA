@@ -8,7 +8,7 @@ require("dotenv").config();
 
 // all routes
 var apiRoutes = require("./routes/api");
-var userRoutes = require("./routes/user");
+var freelancerRoutes = require("./routes/freelancer");
 var customerRoutes = require("./routes/customer");
 
 //database
@@ -22,7 +22,7 @@ mongoose.connect(
 
 // use all routes
 app.use("/", apiRoutes);
-app.use("/", userRoutes);
+app.use("/freelancer", freelancerRoutes);
 app.use("/customer", customerRoutes);
 
 // Middleware
