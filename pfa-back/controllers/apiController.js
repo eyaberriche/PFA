@@ -34,7 +34,7 @@ exports.registerUser = async (req, res) => {
               role: registeredUser.role,
             };
             let token = jwt.sign(payload, "secretkey");
-            res.status(200).json({ token: token });
+            res.status(200).send({ token: token });
           }
         });
       }
@@ -63,11 +63,8 @@ exports.logIn = (req, res) => {
                 role: user.role,
               };
               let token = jwt.sign(payload, "secretkey");
-              res.status(200).json({
+              res.status(200).send({
                 token: token,
-                email: user.email,
-                lastname: user.lastname,
-                role: user.role,
               });
             } else {
               console.log("incoreect passss");
