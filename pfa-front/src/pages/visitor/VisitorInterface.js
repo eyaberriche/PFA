@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
+import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
-import Header from "../../components/Header";
+import MenuBar from "../../components/MenuBar";
 
 function VisitorInterface(props) {
+  const { Content, Header, Sider } = Layout;
   return (
     <div>
-      <Header
-        name1='Se Connecter'
-        page1='/login'
-        name2=''
-        page2=''
-        name3=''
-        page3=''
-        name4=''
-        page4=''
-      />
-
-      <Outlet />
+      <Layout className='layout'>
+        <Header>
+          <MenuBar name1='Se Connecter' page1='/login' />
+        </Header>{" "}
+      </Layout>
+      <Layout>
+        <Sider style={{ backgroundColor: "white" }}>
+          sider
+          <Outlet />
+        </Sider>
+      </Layout>
     </div>
   );
 }

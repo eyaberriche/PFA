@@ -1,22 +1,19 @@
+import { Layout } from "antd";
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import Header from "../../components/Header";
+import MenuBar from "../../components/MenuBar";
 function AdminInterface(props) {
+  const { Content, Header } = Layout;
   return (
     <div>
-      <Header
-        name1='Logout'
-        page1='/login'
-        name2='users'
-        page2=''
-        name3=''
-        page3=''
-        name4=''
-        page4=''
-      />
+      <Layout>
+        <Header>
+          <MenuBar name1='Logout' page1='/login' name2='users' page2='/users' />
+        </Header>
 
-      <Outlet />
+        <Outlet />
+      </Layout>{" "}
     </div>
   );
 }
