@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import MenuBar from "../../components/MenuBar";
 function AdminInterface(props) {
   const { Content, Header } = Layout;
+
   return (
     <div>
       <Layout>
