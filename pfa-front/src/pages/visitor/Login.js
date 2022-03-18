@@ -1,4 +1,5 @@
 import React from "react";
+import "../../components/styles/forms.css";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, Row, Col, Layout } from "antd";
 import MenuBar from "../../components/MenuBar";
@@ -19,68 +20,45 @@ function Login(props) {
               minHeight: 580,
             }}
           >
-            <Row span={20} justify='center' align='middle'>
-              <Col
-                span={12}
-                style={{
-                  alignContent: "center",
-                  backgroundColor: "red",
-                  minHeight: 280,
-                }}
+            <div className='formCenter' style={{ width: "600px" }}>
+              <form
+                className='formFields'
+                style={{ backgroundColor: " rgba(255, 255, 255, 0.4)" }}
               >
-                <div className='login-warp'>
-                  <Form
-                    name='basic'
-                    labelCol={{
-                      span: 8,
-                    }}
-                    wrapperCol={{
-                      span: 10,
-                    }}
-                  >
-                    <Form.Item
-                      label='Username'
-                      name='username'
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your username!",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                      label='Password'
-                      name='password'
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your password!",
-                        },
-                      ]}
-                    >
-                      <Input.Password />
-                    </Form.Item>
-
-                    <Form.Item
-                      wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                      }}
-                    >
-                      <Button type='primary' htmlType='submit'>
-                        Submit
-                      </Button>
-                    </Form.Item>
-                  </Form>{" "}
-                  <button>
-                    <Link to='/register'>register</Link>
-                  </button>
+                <div className='formField'>
+                  <label className='formFieldLabel' htmlFor='email'>
+                    E-Mail Address
+                  </label>
+                  <input
+                    type='email'
+                    id='email'
+                    className='formFieldInput'
+                    placeholder='Enter your email'
+                    name='email'
+                  />
                 </div>
-              </Col>
-            </Row>{" "}
+
+                <div className='formField'>
+                  <label className='formFieldLabel' htmlFor='password'>
+                    Password
+                  </label>
+                  <input
+                    type='password'
+                    id='password'
+                    className='formFieldInput'
+                    placeholder='Enter your password'
+                    name='password'
+                  />
+                </div>
+
+                <div className='formField'>
+                  <button className='formFieldButton'>Sign In</button>{" "}
+                  <Link to='/register' className='formFieldLink'>
+                    Create an account
+                  </Link>
+                </div>
+              </form>
+            </div>
           </Content>
         </Layout>
       </div>

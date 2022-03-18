@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AdminInterface from "./pages/admin/AdminInterface";
-import Categories from "./pages/visitor/Categories";
+
 import Login from "./pages/visitor/Login";
 import Register from "./pages/visitor/register";
 
