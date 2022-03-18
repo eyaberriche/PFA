@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
 var authJwt = require("../middleware/auth");
-// create application/json parser
+
 var jsonParser = bodyParser.json();
 const apiController = require("../controllers/apiController");
 
