@@ -10,9 +10,7 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<VisitorInterface />}>
-          <Route index element={<Categories />}></Route>
-        </Route>
+        <Route path='/' element={<VisitorInterface />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/register' element={<Register />}></Route>
         <Route path='/admin' element={<AdminInterface />}></Route>

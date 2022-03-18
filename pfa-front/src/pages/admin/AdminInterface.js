@@ -1,10 +1,10 @@
 import { Layout } from "antd";
 import React from "react";
-import { Outlet } from "react-router-dom";
 
 import MenuBar from "../../components/MenuBar";
+import Categories from "../visitor/Categories";
 function AdminInterface(props) {
-  const { Content, Header } = Layout;
+  const { Header } = Layout;
 
   return (
     <div>
@@ -13,7 +13,7 @@ function AdminInterface(props) {
           <MenuBar name1='Logout' page1='/login' name2='users' page2='/users' />
         </Header>
 
-        <Outlet />
+        <Categories />
       </Layout>{" "}
     </div>
   );

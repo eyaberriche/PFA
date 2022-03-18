@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout } from "antd";
-import { Outlet } from "react-router-dom";
 import MenuBar from "../../components/MenuBar";
+import Categories from "./Categories";
 
 function VisitorInterface(props) {
   const { Content, Header, Sider } = Layout;
@@ -13,10 +13,8 @@ function VisitorInterface(props) {
         </Header>{" "}
       </Layout>
       <Layout>
-        <Sider style={{ backgroundColor: "white" }}>
-          sider
-          <Outlet />
-        </Sider>
+        <Categories />
+        <Content />
       </Layout>
     </div>
   );

@@ -11,59 +11,74 @@ function Login(props) {
           <MenuBar />
         </Header>
         <Layout>
-          <Content style={{ padding: "0 50px" }}>
-            <Row justify='center' align='middle'>
-              {" "}
-              <Col span={12} style={{ backgroundColor: "red" }}>
-                <Form
-                  name='basic'
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 8,
-                  }}
-                >
-                  <Form.Item
-                    label='Username'
-                    name='username'
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your username!",
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                    label='Password'
-                    name='password'
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your password!",
-                      },
-                    ]}
-                  >
-                    <Input.Password />
-                  </Form.Item>
-
-                  <Form.Item
+          <Content
+            className='site-layout-background'
+            style={{
+              padding: 150,
+              margin: 0,
+              minHeight: 580,
+            }}
+          >
+            <Row span={20} justify='center' align='middle'>
+              <Col
+                span={12}
+                style={{
+                  alignContent: "center",
+                  backgroundColor: "red",
+                  minHeight: 280,
+                }}
+              >
+                <div className='login-warp'>
+                  <Form
+                    name='basic'
+                    labelCol={{
+                      span: 8,
+                    }}
                     wrapperCol={{
-                      offset: 8,
-                      span: 16,
+                      span: 10,
                     }}
                   >
-                    <Button type='primary' htmlType='submit'>
-                      Submit
-                    </Button>
-                  </Form.Item>
-                </Form>{" "}
-                <button>
-                  <Link to='/register'>register</Link>
-                </button>
+                    <Form.Item
+                      label='Username'
+                      name='username'
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your username!",
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                      label='Password'
+                      name='password'
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your password!",
+                        },
+                      ]}
+                    >
+                      <Input.Password />
+                    </Form.Item>
+
+                    <Form.Item
+                      wrapperCol={{
+                        offset: 8,
+                        span: 16,
+                      }}
+                    >
+                      <Button type='primary' htmlType='submit'>
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </Form>{" "}
+                  <button>
+                    <Link to='/register'>register</Link>
+                  </button>
+                </div>
               </Col>
             </Row>{" "}
           </Content>
