@@ -1,10 +1,20 @@
-import React from "react";
-import "../../components/styles/forms.css";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { Form, Input, Button, Row, Col, Layout } from "antd";
 import MenuBar from "../../components/MenuBar";
 function Login(props) {
   const { Content, Header } = Layout;
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    //alert(JSON.stringify(state));
+  };
   return (
     <Layout className='layout'>
       <div>
@@ -15,50 +25,84 @@ function Login(props) {
           <Content
             className='site-layout-background'
             style={{
-              padding: 150,
+              padding: 110,
               margin: 0,
-              minHeight: 580,
+              minHeight: 540,
             }}
           >
-            <div className='formCenter' style={{ width: "600px" }}>
-              <form
-                className='formFields'
-                style={{ backgroundColor: " rgba(255, 255, 255, 0.4)" }}
+            <Row style={{ minHeight: props.rowHeight }}>
+              <Col
+                justify='center'
+                align='middle'
+                span={11}
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, 0.6)",
+
+                  borderRadius: "14px",
+                }}
               >
-                <div className='formField'>
-                  <label className='formFieldLabel' htmlFor='email'>
-                    E-Mail Address
-                  </label>
-                  <input
-                    type='email'
-                    id='email'
-                    className='formFieldInput'
-                    placeholder='Enter your email'
+                <p
+                  style={{
+                    minHeight: "90px",
+                  }}
+                >
+                  {props.avatar}
+                </p>
+                <Form
+                  name={props.nameform}
+                  labelCol={{
+                    span: 6,
+                  }}
+                  wrapperCol={{
+                    span: 12,
+                  }}
+                >
+                  <Form.Item
+                    label='Email'
                     name='email'
-                  />
-                </div>
+                    rules={[
+                      {
+                        required: true,
+                        type: "email",
+                        message: "Please input your username!",
+                      },
+                    ]}
+                  >
+                    <Input
+                      name='email'
+                      value={state.email}
+                      onChange={handleChange}
+                    />
+                  </Form.Item>
 
-                <div className='formField'>
-                  <label className='formFieldLabel' htmlFor='password'>
-                    Password
-                  </label>
-                  <input
-                    type='password'
-                    id='password'
-                    className='formFieldInput'
-                    placeholder='Enter your password'
+                  <Form.Item
+                    label='Mot de passe'
                     name='password'
-                  />
-                </div>
+                    rules={[
+                      {
+                        required: true,
+                        message: "Entrez votre mot de passe SVP!",
+                      },
+                    ]}
+                  >
+                    <Input.Password
+                      name='password'
+                      value={state.password}
+                      onChange={handleChange}
+                    />
+                  </Form.Item>
 
-                <div className='formField'>
-                  <button className='formFieldButton'>Sign In</button>{" "}
-                  <Link to='/register' className='formFieldLink'>
-                    Create an account
-                  </Link>
-                </div>
-              </form>
-            </div>
+                  <Form.Item
+                    wrapperCol={{
+                      offset: 4,
+                      span: 16,
+                    }}
+                  >
+                    <Button type='submit'>connecter</Button>
+                  </Form.Item>
+                </Form>
+              </Col>
+            </Row>
           </Content>
         </Layout>
       </div>

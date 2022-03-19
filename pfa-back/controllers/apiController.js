@@ -65,6 +65,7 @@ exports.logIn = (req, res) => {
               let token = jwt.sign(payload, "secretkey");
               res.status(200).send({
                 token: token,
+                user,
               });
             } else {
               console.log("incoreect passss");
