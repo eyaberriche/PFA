@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function MenuBar(props) {
   return (
-    <div>
+    
       <Menu mode='horizontal' theme='dark'>
         <Menu.Item key='home'>
           <Link to='/'>Logo</Link>
@@ -16,16 +16,18 @@ function MenuBar(props) {
         ) : (
           ""
         )}
-        {props.name2 && props.page2 ? (
+        
+        {props.name3 && props.page3 ? (
           <Menu.Item key={Math.random(1)}>
-            <Link to={props.page2}>{props.name2}</Link>
+            <Link to={props.page3}>{props.name3}</Link>
           </Menu.Item>
         ) : (
           ""
         )}
-        {props.name3 && props.page3 ? (
+
+        {props.name2 && props.page2 ? (
           <Menu.Item key={Math.random(1)}>
-            <Link to={props.page3}>{props.name3}</Link>
+            <Link to={props.page2}>{props.name2}</Link>
           </Menu.Item>
         ) : (
           ""
@@ -38,7 +40,7 @@ function MenuBar(props) {
           ""
         )}
       </Menu>
-    </div>
+ 
   );
 }
 

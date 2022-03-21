@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 5000;
+var cors = require('cors')
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 //environment variables
@@ -19,7 +20,7 @@ mongoose.connect(
     console.log("Connected Database Successfully");
   }
 );
-
+app.use(cors())
 // use all routes
 app.use("/", apiRoutes);
 app.use("/freelancer", freelancerRoutes);
