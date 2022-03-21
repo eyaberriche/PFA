@@ -1,12 +1,50 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Row, Col, Layout } from "antd";
+import { Form, Button, Input, Row, Col, Layout } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import "../../components/styles/form.css";
+
 import MenuBar from "../../components/MenuBar";
+
+// couleur rose #ff2d9b
+//import login from "../../services/visitorServices/auth";
 function Login(props) {
   const { Content, Header } = Layout;
+  /* const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   const [state, setState] = useState({
     email: "",
     password: "",
+    successMessage: null,
   });
+  const handleSubmitClick = (e) => {
+    e.preventDefault();
+    const data = {
+      email: state.email,
+      password: state.password,
+    };
+    alert(JSON.stringify(data));
+    /* login(data).then(
+      () => {
+        props.history.push("/admin");
+        //window.location.reload();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        console.log(resMessage);
+      }
+    );
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState((prevState) => ({
@@ -14,7 +52,7 @@ function Login(props) {
       [name]: value,
     }));
     //alert(JSON.stringify(state));
-  };
+  };*/
   return (
     <Layout className='layout'>
       <div>
@@ -23,82 +61,96 @@ function Login(props) {
         </Header>
         <Layout>
           <Content
-            className='site-layout-background'
             style={{
-              padding: 110,
+              padding: 170,
+              backgroundImage: "url('/bg.png')",
+              backgroundSize: "cover",
+
               margin: 0,
-              minHeight: 540,
+              minHeight: 560,
             }}
           >
-            <Row style={{ minHeight: props.rowHeight }}>
+            <Row>
               <Col
                 justify='center'
                 align='middle'
-                span={11}
+                span={9}
+                pull={2}
                 style={{
-                  backgroundColor: "rgba(0, 0, 0, 0.6)",
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
 
                   borderRadius: "14px",
                 }}
               >
+                <p>
+                  <UserOutlined
+                    style={{
+                      color: "#ff2d9b",
+                      backgroundColor: "white",
+                      fontSize: "350%",
+                      background: "rounded",
+                    }}
+                  />
+                </p>
+
                 <p
                   style={{
-                    minHeight: "90px",
+                    minHeight: "20px",
                   }}
                 >
-                  {props.avatar}
+                  <h3 style={{ color: "white" }}> Se connecter </h3>
                 </p>
                 <Form
-                  name={props.nameform}
-                  labelCol={{
-                    span: 6,
+                  autoComplete='off'
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 14 }}
+                  onFinish={(values) => {
+                    console.log({ values });
                   }}
-                  wrapperCol={{
-                    span: 12,
+                  onFinishFailed={(error) => {
+                    console.log({ error });
                   }}
                 >
                   <Form.Item
-                    label='Email'
                     name='email'
-                    rules={[
-                      {
-                        required: true,
-                        type: "email",
-                        message: "Please input your username!",
-                      },
-                    ]}
-                  >
-                    <Input
-                      name='email'
-                      value={state.email}
-                      onChange={handleChange}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    label='Mot de passe'
-                    name='password'
-                    rules={[
-                      {
-                        required: true,
-                        message: "Entrez votre mot de passe SVP!",
-                      },
-                    ]}
-                  >
-                    <Input.Password
-                      name='password'
-                      value={state.password}
-                      onChange={handleChange}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    wrapperCol={{
-                      offset: 4,
-                      span: 16,
+                    label='Email'
+                    style={{
+                      color: "white !important",
                     }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Entrez votre email SVP !",
+                      },
+                      { type: "email", message: "Entrez un valid Email !" },
+                    ]}
+                    hasFeedback
                   >
-                    <Button type='submit'>connecter</Button>
+                    <Input placeholder='Type your email' />
+                  </Form.Item>
+
+                  <Form.Item
+                    name='password'
+                    label='Password'
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                    hasFeedback
+                  >
+                    <Input.Password placeholder='Tapez votre mot de passe SVP !' />
+                  </Form.Item>
+
+                  <Form.Item wrapperCol={{ span: 24 }}>
+                    <Button
+                      className='boutton'
+                      block
+                      type='primary'
+                      htmlType='submit'
+                    >
+                      Se connecter
+                    </Button>
                   </Form.Item>
                 </Form>
               </Col>

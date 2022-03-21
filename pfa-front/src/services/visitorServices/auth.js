@@ -6,8 +6,8 @@ const register = (data) => {
     data,
   });
 };
-const login = async (data) => {
-  const response = await axios.post(API_URL + "login", data);
+const login = (data) => {
+  const response = axios.post(API_URL + "login", data);
   if (response.data.token) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
