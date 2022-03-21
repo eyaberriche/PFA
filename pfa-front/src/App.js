@@ -7,8 +7,10 @@ import VisitorInterface from "./pages/visitor/VisitorInterface";
 
 import Login from "./pages/visitor/Login";
 import Register from "./pages/visitor/register";
+import { Dashboard } from "./pages/user/Dashboard";
 import { Services } from "./pages/user/Services";
 import { Demandes } from "./pages/user/Demandes";
+import { Categorie } from "./pages/user/Categorie";
 
 function App() {
   return (
@@ -19,10 +21,10 @@ function App() {
         <Route path='/register' element={<Register />}></Route>
         <Route path='/admin' element={<AdminInterface />}></Route>
         <Route path='/user' element={<UserInterface />}></Route>
-        <Route path='/services' element={<Services />}></Route>
-        <Route path='/demandes' element={<Demandes />}></Route>
-
-
+        <Route path='/dashboard' element={<Dashboard />}></Route>
+        <Route exact path='/services'  element={  <Services />}></Route>
+       <Route exact path='/demandes'  element={  <Demandes />}></Route>
+       <Route exact path='/categorie'  element={  <Categorie />}></Route>
 
       </Routes>
     </div>

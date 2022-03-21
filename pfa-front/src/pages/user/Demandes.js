@@ -1,14 +1,14 @@
 import React ,{useState}  from 'react';
 import { Tables } from '../../components/Tables';
-import { Space,Layout, Typography } from 'antd';
-import MenuBar from "../../components/MenuBar";
+import { Layout, Space, Typography } from 'antd';
 import { Buttons } from '../../components/Buttons';
+import { Header } from 'antd/lib/layout/layout';
+import MenuBar from '../../components/MenuBar';
+import { Subnav } from '../../components/Subnav';
 
 
 export  function Demandes(props){
-    const { Content, Header } = Layout;
     const [show,setShow]=useState('Show');
-    const [add,setAdd]=useState('Add');
     const [update,setUpdate]=useState('Update');
     const [delet, setDelet]=useState('Delete')
 
@@ -29,7 +29,6 @@ export  function Demandes(props){
                 render: (text, record) => (
                   <Space size="middle">
                     <Buttons name1={show}/>
-                    <Buttons name2={add}/>
                     <Buttons name3={update}/>
                     <Buttons name4={delet}/>
 
@@ -49,30 +48,24 @@ export  function Demandes(props){
           }
         return(
 
-            <Layout className='layout'>
-      
-            <Header>
-            <MenuBar name1='Logout' page1='/login' name3='Mes services' page3='/services' name4='Mes demandes' page4='/demandes'   />
-          </Header>
-          <Layout>
-            <Content
-              className='site-layout-background'
-              style={{
-                padding: -10,
-                margin: 0,
-                minHeight: 580,
-              }}
-            >
-        <Typography.Title  style={{ margin: 20 }}>
-            Mes demandes
-        </Typography.Title>
-          <Tables name={columns} data={data}/>    
-  
-            </Content>
-  
+         
+            <Layout>
+                    <Header className="header">
+                    <MenuBar name1='Logout' page1='/login' name3='dashboard' page3='/dashboard' />
+                    </Header>
+                    <Layout>
+                        <Subnav/>
+    
+                        <Layout style={{ padding: '0 24px 24px' }}>
+                            <Typography.Title  style={{ margin: 20 }}>
+                                        Mes demandes
+                            </Typography.Title>
+                            <Tables name={columns} data={data}/>    
+                        </Layout>
+                    </Layout>
             </Layout>
-            </Layout>  
-           
+  
+     
         );
     }
     

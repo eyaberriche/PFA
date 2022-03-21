@@ -1,35 +1,47 @@
-import React , { useState }  from 'react';
+import React , { useState , useEffect}  from 'react';
 import { Tables } from '../../components/Tables';
 import { Layout, Space,Typography} from 'antd';
 import { Buttons } from '../../components/Buttons';
 import { Header } from 'antd/lib/layout/layout';
 import MenuBar from '../../components/MenuBar';
 import { Subnav } from '../../components/Subnav';
-
-export  function Services (props){
+import axios from 'axios'
+export  function Categorie (props){
 
       const [show,setShow]=useState('Show');
       const [update,setUpdate]=useState('Update');
       const [delet, setDelet]=useState('Delete')
+      const [categories,setCategories]=useState([])
+     
+     
 
 
 
 
+      
+
+const GetCategories = ()=>{
+    axios.get('http://localhost:5000/category/all')
+    .then(res => {
+        this.useState({ data: res.data });
+      })
+
+  
+    .catch(err=>console.log("Error",err))
+}
+
+useEffect(()=>{
+    GetCategories();
+  
+})
         const columns = [
             {
-              title: 'Name',
+              title: 'Nom',
               dataIndex: 'name',
               width: 150,
             },
-            {
-              title: 'Age',
-              dataIndex: 'age',
-              width: 150,
-            },
-            {
-              title: 'Address',
-              dataIndex: 'address',
-            },
+            
+            
             {
                 title: 'Action',
                 key: 'action',
@@ -45,15 +57,24 @@ export  function Services (props){
                 
             }
           ];
-          const data = [];
-          for (let i = 0; i < 100; i++) {
-            data.push({
-              key: i,
-              name: `Edward King ${i}`,
-              age: 32,
-              address: `London, Park Lane no. ${i}`,
-            });
-          }
+
+          const datasource = []
+         /* const datasource = 
+          {data.cat.map((orderItem) => {
+          return (
+            [
+                {
+                  key: {orderItem.id},
+                 
+                  name:{orderItem.name},
+                 
+                  
+                },
+             
+        ])})}*/
+        
+       
+         
         return(
       
                 <Layout>
@@ -69,7 +90,7 @@ export  function Services (props){
                                 Mes services
                           </Typography.Title>
         
-                          <Tables name={columns} data={data}/>  
+                          <Tables name={columns} data={datasource}/>  
                              
                         </Layout>
                     </Layout>

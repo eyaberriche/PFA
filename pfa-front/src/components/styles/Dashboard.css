@@ -1,0 +1,42 @@
+/* Split the screen in half */
+.split {
+    height: 60%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 10;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+   
+  }
+  
+  /* If you want the content centered horizontally and vertically */
+  .centered {
+    position: left;
+    top: 50%;
+    left: 50%;
+    transform: translate(-30%, -10%);
+    text-align:center ;
+
+  }
+
+
+.ant-layout-sider {
+    height: 800px;
+}
+
+
+
+.ant-avatar.ant-avatar-circle.ant-avatar-image
+{
+    height: 300px;
+    width: 300px;
+}
+  

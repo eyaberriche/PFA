@@ -91,7 +91,7 @@ exports.createCategroy = async (req, res) => {
 //liste des categories
 exports.allCategories = async (req, res) => {
   Category.find({}, function (err, categorys) {
-    res.json(categorys);
+    res.send(categorys);
   });
 };
 //liste des utilisateurs par categorie
