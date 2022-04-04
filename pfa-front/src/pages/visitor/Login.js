@@ -1,36 +1,34 @@
 import React, { useState } from "react";
-import { Form, Button, Input, Row, Col, Layout } from "antd";
+import { Form, Button, Input, Row, Col, Layout, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "../../components/styles/form.css";
 
 import MenuBar from "../../components/MenuBar";
-
-// couleur rose #ff2d9b
-//import login from "../../services/visitorServices/auth";
+import { Link } from "react-router-dom";
+import login from "../../services/visitorServices/auth";
 function Login(props) {
   const { Content, Header } = Layout;
-  /* const onFinish = (values) => {
-    console.log("Success:", values);
-  };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
   const [state, setState] = useState({
     email: "",
     password: "",
     successMessage: null,
   });
-  const handleSubmitClick = (e) => {
-    e.preventDefault();
+
+  const handleChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+    console.log(JSON.stringify(state));
+  };
+  const handleSubmit = () => {
+    //e.preventDefault();
     const data = {
       email: state.email,
       password: state.password,
     };
     alert(JSON.stringify(data));
-    /* login(data).then(
+    login(data).then(
       () => {
-        props.history.push("/admin");
+        props.history.push("/");
         //window.location.reload();
       },
       (error) => {
@@ -40,19 +38,10 @@ function Login(props) {
             error.response.data.message) ||
           error.message ||
           error.toString();
-
         console.log(resMessage);
       }
     );
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    //alert(JSON.stringify(state));
-  };*/
   return (
     <Layout className='layout'>
       <div>
@@ -93,23 +82,19 @@ function Login(props) {
                   />
                 </p>
 
-                <p
+                <Typography
                   style={{
                     minHeight: "20px",
                   }}
                 >
-                  <h3 style={{ color: "white" }}> Se connecter </h3>
-                </p>
+                  <h4 style={{ color: "white" }}> Se connecter </h4>
+                </Typography>
                 <Form
                   autoComplete='off'
                   labelCol={{ span: 6 }}
                   wrapperCol={{ span: 14 }}
-                  onFinish={(values) => {
-                    console.log({ values });
-                  }}
-                  onFinishFailed={(error) => {
-                    console.log({ error });
-                  }}
+                  onFinish={handleSubmit}
+                  onFinishFailed={handleSubmit}
                 >
                   <Form.Item
                     name='email'
@@ -122,11 +107,15 @@ function Login(props) {
                         required: true,
                         message: "Entrez votre email SVP !",
                       },
-                      { type: "email", message: "Entrez un valid Email !" },
+                      { type: "email", message: "Entrez un valid Email svp !" },
                     ]}
                     hasFeedback
                   >
-                    <Input placeholder='Type your email' />
+                    <Input
+                      name='email'
+                      onChange={handleChange}
+                      placeholder='Tapez votre email'
+                    />
                   </Form.Item>
 
                   <Form.Item
@@ -135,11 +124,16 @@ function Login(props) {
                     rules={[
                       {
                         required: true,
+                        message: "Entrez votre mot de passe svp!",
                       },
                     ]}
                     hasFeedback
                   >
-                    <Input.Password placeholder='Tapez votre mot de passe SVP !' />
+                    <Input.Password
+                      name='password'
+                      onChange={handleChange}
+                      placeholder='Tapez votre mot de passe '
+                    />
                   </Form.Item>
 
                   <Form.Item wrapperCol={{ span: 24 }}>
@@ -150,6 +144,16 @@ function Login(props) {
                       htmlType='submit'
                     >
                       Se connecter
+                    </Button>
+                  </Form.Item>
+
+                  <Form.Item
+                    wrapperCol={{ span: 24 }}
+                    labelCol={{ span: 15 }}
+                    label="Vous n'avez pas un compte ?"
+                  >
+                    <Button className='link'>
+                      <Link to='/register'>S'inscrir</Link>
                     </Button>
                   </Form.Item>
                 </Form>

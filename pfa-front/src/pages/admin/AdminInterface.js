@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import React from "react";
 
 import MenuBar from "../../components/MenuBar";
-import Categories from "../visitor/Categories";
+import Categories from "../../components/Categories";
 function AdminInterface(props) {
   const { Header } = Layout;
 
