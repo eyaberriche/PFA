@@ -6,6 +6,8 @@ import "../../components/styles/form.css";
 import MenuBar from "../../components/MenuBar";
 import { Link } from "react-router-dom";
 import login from "../../services/visitorServices/auth";
+import axios from "axios";
+import { useForm } from "antd/lib/form/Form";
 function Login(props) {
   const { Content, Header } = Layout;
 
@@ -19,28 +21,17 @@ function Login(props) {
     setState({ ...state, [e.target.name]: e.target.value });
     console.log(JSON.stringify(state));
   };
-  const handleSubmit = () => {
-    //e.preventDefault();
+  const onSubmit = (e) => {
+    e.preventDefault();
     const data = {
       email: state.email,
       password: state.password,
     };
     alert(JSON.stringify(data));
-    login(data).then(
-      () => {
-        props.history.push("/");
-        //window.location.reload();
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        console.log(resMessage);
-      }
-    );
+    login({
+      email: data.email,
+      password: data.password,
+    });
   };
   return (
     <Layout className='layout'>
@@ -51,7 +42,7 @@ function Login(props) {
         <Layout>
           <Content
             style={{
-              padding: 170,
+              padding: 140,
               backgroundImage: "url('/bg.png')",
               backgroundSize: "cover",
 
@@ -93,8 +84,6 @@ function Login(props) {
                   autoComplete='off'
                   labelCol={{ span: 6 }}
                   wrapperCol={{ span: 14 }}
-                  onFinish={handleSubmit}
-                  onFinishFailed={handleSubmit}
                 >
                   <Form.Item
                     name='email'
@@ -142,6 +131,7 @@ function Login(props) {
                       block
                       type='primary'
                       htmlType='submit'
+                      onClick={onSubmit}
                     >
                       Se connecter
                     </Button>

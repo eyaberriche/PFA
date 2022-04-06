@@ -6,13 +6,14 @@ const register = (data) => {
     data,
   });
 };
-const login = (data) => {
+function login(data) {
   const response = axios.post(API_URL + "login", data);
   if (response.data.token) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
+  alert(response.data);
   return response.data;
-};
+}
 const logout = () => {
   localStorage.removeItem("user");
 };
