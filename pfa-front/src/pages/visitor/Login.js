@@ -5,34 +5,35 @@ import "../../components/styles/form.css";
 
 import MenuBar from "../../components/MenuBar";
 import { Link } from "react-router-dom";
-import login from "../../services/visitorServices/auth";
-import axios from "axios";
-import { useForm } from "antd/lib/form/Form";
+import { login } from "../../services/visitorServices/auth";
 function Login(props) {
   const { Content, Header } = Layout;
-
-  const [state, setState] = useState({
+  const [data, setData] = useState({
     email: "",
     password: "",
-    successMessage: null,
+    error: null,
   });
 
+  const { email, password, error } = data;
+
   const handleChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
-    console.log(JSON.stringify(state));
+    setData({ ...data, [e.target.name]: e.target.value });
+    console.log(JSON.stringify(data));
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const data = {
-      email: state.email,
-      password: state.password,
-    };
-    alert(JSON.stringify(data));
-    login({
-      email: data.email,
-      password: data.password,
-    });
+
+  const handleSubmit = async (email, password) => {
+    try {
+      setData({ ...data, error: null });
+      alert(JSON.stringify(data));
+      await login({ email, password });
+
+      props.history.push("/");
+    } catch (err) {
+      setData({ ...data, error: err.response.data.error });
+      console.log(error);
+    }
   };
+
   return (
     <Layout className='layout'>
       <div>
@@ -103,6 +104,7 @@ function Login(props) {
                     <Input
                       name='email'
                       onChange={handleChange}
+                      value={email}
                       placeholder='Tapez votre email'
                     />
                   </Form.Item>
@@ -121,6 +123,7 @@ function Login(props) {
                     <Input.Password
                       name='password'
                       onChange={handleChange}
+                      value={password}
                       placeholder='Tapez votre mot de passe '
                     />
                   </Form.Item>
@@ -131,7 +134,7 @@ function Login(props) {
                       block
                       type='primary'
                       htmlType='submit'
-                      onClick={onSubmit}
+                      onClick={handleSubmit}
                     >
                       Se connecter
                     </Button>

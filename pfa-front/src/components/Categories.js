@@ -1,25 +1,30 @@
 import { Layout, Menu } from "antd";
 import Sider from "antd/lib/layout/Sider";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { allCatgeories } from "../services/visitorServices/categorie";
 
 function Categories(props) {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    getCategories();
+  }, []);
+  const getCategories = async () => {
+    const result = await allCatgeories();
+
+    setCategories(result.data);
+  };
+
+  console.log(JSON.stringify(categories));
   return (
     <div>
       <Sider>
         <Menu theme='dark' mode='inline'>
-          <NavLink to='/services' replace={true}>
-            <Menu.Item key='1'>Categorie 1</Menu.Item>
-          </NavLink>
-          <NavLink to='/demandes' replace={true}>
-            <Menu.Item key='2'>catgeorie 2</Menu.Item>
-          </NavLink>
-          <NavLink to='/demandes' replace={true}>
-            <Menu.Item key='3'>catgeorie 3</Menu.Item>
-          </NavLink>
-          <NavLink to='/demandes' replace={true}>
-            <Menu.Item key='4'>catgeorie 4</Menu.Item>
-          </NavLink>
+          {categories.map((categorie) => (
+            <NavLink to='/' replace={true}>
+              <Menu.Item key={Math.random()}>{categorie.name}</Menu.Item>
+            </NavLink>
+          ))}
         </Menu>
       </Sider>
     </div>

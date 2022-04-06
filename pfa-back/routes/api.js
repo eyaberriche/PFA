@@ -15,7 +15,8 @@ router.post(
   [authJwt.verifyToken, authJwt.isAdmin],
   apiController.createCategroy
 );
+
 router.get("/category/all", jsonParser, apiController.allCategories);
-router.get("/users/category/:id", jsonParser, apiController.allUsersByCategory);
+router.get("/category/users/:id", jsonParser, apiController.allUsersByCategory);
 
 module.exports = router;

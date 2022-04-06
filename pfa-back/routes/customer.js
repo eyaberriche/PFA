@@ -40,14 +40,14 @@ router.get(
 router.put(
   "/service/update/:id",
   jsonParser,
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken, authJwt.isUser],
   customerController.updateService
 );
 //delete service
 router.delete(
   "/service/delete/:id",
   jsonParser,
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken, authJwt.isUser],
   customerController.deleteService
 );
 module.exports = router;
