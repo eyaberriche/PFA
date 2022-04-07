@@ -1,21 +1,19 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export function Subnav() {
-  const { SubMenu } = Menu;
   const { Sider } = Layout;
 
   return (
     <Sider className='site-layout-background'>
       <Menu theme='dark' mode='inline'>
-        <NavLink to='/services' replace={true}>
+        <Link to='/services' replace={true}>
           <Menu.Item key='1'>Services</Menu.Item>
-        </NavLink>
-        <NavLink to='/demandes' replace={true}>
+        </Link>
+        <Link to='/demandes' replace={true}>
           <Menu.Item key='2'>Demandes</Menu.Item>
-        </NavLink>
+        </Link>
       </Menu>
     </Sider>
   );

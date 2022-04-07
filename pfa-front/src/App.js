@@ -9,7 +9,7 @@ import Register from "./pages/visitor/register";
 import { Dashboard } from "./pages/user/Dashboard";
 import { Services } from "./pages/user/Services";
 import { Demandes } from "./pages/user/Demandes";
-import { Categorie } from "./pages/user/Categorie";
+import FreelancersPage from "./pages/visitor/FreelancersPage";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Route
           exact
           path='/categories/view/:categorieId'
-          element={<Categorie />}
+          element={<FreelancersPage />}
         ></Route>
       </Routes>
     </div>

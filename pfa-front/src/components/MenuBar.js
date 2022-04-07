@@ -1,10 +1,11 @@
 import React from "react";
-import { Menu } from "antd";
+import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 
 function MenuBar(props) {
+  const { Header } = Layout;
   return (
-    
+    <Header>
       <Menu mode='horizontal' theme='dark'>
         <Menu.Item key='home'>
           <Link to='/'>Logo</Link>
@@ -16,7 +17,7 @@ function MenuBar(props) {
         ) : (
           ""
         )}
-        
+
         {props.name3 && props.page3 ? (
           <Menu.Item key={Math.random(1)}>
             <Link to={props.page3}>{props.name3}</Link>
@@ -40,7 +41,7 @@ function MenuBar(props) {
           ""
         )}
       </Menu>
- 
+    </Header>
   );
 }
 

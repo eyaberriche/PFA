@@ -2,18 +2,19 @@ import React from "react";
 import { Layout } from "antd";
 import MenuBar from "../../components/MenuBar";
 
-
- function UserInterface(props) {
-  const {  Header} = Layout;
+function UserInterface(props) {
   return (
     <div>
       <Layout className='layout'>
-        <Header>
-        <MenuBar name1='Logout' page1='/login' name3='dashboard' page3='/dashboard' />
-        </Header>{" "}
+        <MenuBar
+          name1='Logout'
+          page1='/login'
+          name3='dashboard'
+          page3='/dashboard'
+        />
       </Layout>
       <Layout>
-      <p>welcome to home page</p>  
+        <p>welcome to home page</p>
       </Layout>
     </div>
   );

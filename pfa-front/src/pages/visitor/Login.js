@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Input, Row, Col, Layout, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import "../../components/styles/form.css";
+import "../../components/constants/styles/form.css";
 
 import MenuBar from "../../components/MenuBar";
 import { Link } from "react-router-dom";
