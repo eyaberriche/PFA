@@ -17,6 +17,10 @@ router.post(
 );
 
 router.get("/category/all", jsonParser, apiController.allCategories);
-router.get("/category/users/:id", jsonParser, apiController.allUsersByCategory);
+router.get(
+  "/category/freelancers/:id",
+  jsonParser,
+  apiController.allUsersByCategory
+);
 
 module.exports = router;

@@ -6,3 +6,10 @@ export const allCatgeories = async () => {
 
   return response.data;
 };
+///category/freelancers/:id
+
+export const allFreelancersBycateg = async (id) => {
+  const response = await axios.get(API_URL + `/freelancers/${id}`);
+
+  return response.data;
+};

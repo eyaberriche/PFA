@@ -1,6 +1,7 @@
 // lhajet l public kima login / sign up / affichage des profils
 const jwt = require("jsonwebtoken");
 var User = require("../models/user");
+const mongoose = require("mongoose");
 var Competence = require("../models/competence");
 var Category = require("../models/category");
 var bcrypt = require("bcrypt");
@@ -93,19 +94,29 @@ exports.createCategroy = async (req, res) => {
 exports.allCategories = async (req, res) => {
   await Category.find({}, function (err, categories) {
     res.send(categories);
-  });
+  }).clone();
 };
-//liste des utilisateurs par categorie
 exports.allUsersByCategory = async (req, res) => {
-  const category = await Category.findById(req.params.id);
+  const category = await Category.findById(req.params.id).clone();
   var users = [];
-  Competence.find({ category: category._id }, function (err, competences) {
-    competences.forEach(async function (competence) {
-      const user = await User.findOne({ _id: competence.freelancer });
-      console.log(user);
-      users.push(user);
+  Competence.find(
+    { category: category._id },
+    async function (err, competences) {
+      competences.forEach(async function (competence) {
+        const user = await User.findOne({ _id: competence.freelancer }).clone();
+        // console.log(user);
+        users.push(user);
+      });
+    }
+  )
+    .clone()
+    .catch(function (err) {
+      console.log(err);
     });
 
-    res.send(users);
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(res.send(users));
+    }, 500);
   });
 };
