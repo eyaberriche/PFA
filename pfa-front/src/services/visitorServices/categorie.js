@@ -13,3 +13,10 @@ export const allFreelancersBycateg = async (id) => {
 
   return response.data;
 };
+//category by id
+
+export const categoryByid = async (id) => {
+  const response = await axios.get(API_URL + `/${id}`);
+
+  return response.data[0];
+};
