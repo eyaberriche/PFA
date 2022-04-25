@@ -6,13 +6,23 @@ export const register = (data) => {
     data,
   });
 };
-export const login = async (data) => {
-  const response = await axios.post(API_URL + "login", data);
-  if (response.data.token) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
-  //alert(response.data);
-  return response.data;
+export const login = async (email, password) => {
+  const res = await axios.post(
+    API_URL + "login",
+    { email, password },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    }
+  );
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("user", res.data.user);
+  console.log(res.data.token);
+  console.log(res.data.user);
+  return res.data.token;
 };
 export const logout = () => {
   localStorage.removeItem("user");

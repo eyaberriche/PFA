@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import $ from "jquery";
 import { Form, Button, Input, Row, Col, Layout, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "../../components/constants/styles/form.css";
+import "../../components/constants/styles/animation.css";
 
 import MenuBar from "../../components/MenuBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/visitorServices/auth";
+
 function Login(props) {
+  const history = useNavigate();
   const { Content, Header } = Layout;
   const [data, setData] = useState({
     email: "",
@@ -18,19 +22,17 @@ function Login(props) {
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
-    console.log(JSON.stringify(data));
   };
 
-  const handleSubmit = async (email, password) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       setData({ ...data, error: null });
-      alert(JSON.stringify(data));
-      await login({ email, password });
-
-      props.history.push("/");
+      await login(email, password);
+      history("/");
     } catch (err) {
-      setData({ ...data, error: err.response.data.error });
-      console.log(error);
+      setData({ ...data, error: err.response.data.msg });
+      console.log(err.response.data.msg);
     }
   };
 
@@ -102,9 +104,11 @@ function Login(props) {
                     hasFeedback
                   >
                     <Input
+                      className='form-control'
+                      type='email'
                       name='email'
-                      onChange={handleChange}
                       value={email}
+                      onChange={handleChange}
                       placeholder='Tapez votre email'
                     />
                   </Form.Item>
@@ -121,13 +125,19 @@ function Login(props) {
                     hasFeedback
                   >
                     <Input.Password
+                      className='form-control'
+                      type='password'
                       name='password'
-                      onChange={handleChange}
                       value={password}
+                      onChange={handleChange}
                       placeholder='Tapez votre mot de passe '
                     />
                   </Form.Item>
-
+                  {error ? (
+                    <h4 id='hidethis' style={{ color: "red" }}>
+                      {error}
+                    </h4>
+                  ) : null}
                   <Form.Item wrapperCol={{ span: 24 }}>
                     <Button
                       className='boutton'
