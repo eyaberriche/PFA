@@ -24,7 +24,10 @@ function Categories(props) {
     <Sider className='site-layout-background'>
       <Menu theme='dark' mode='inline'>
         {categories.map((categorie) => (
-          <Menu.Item onClick={() => navigationLink(categorie._id)}>
+          <Menu.Item
+            key={(Math.random() + 1).toString(36)}
+            onClick={() => navigationLink(categorie._id)}
+          >
             {categorie.name}
           </Menu.Item>
         ))}

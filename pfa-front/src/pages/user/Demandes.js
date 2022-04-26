@@ -44,14 +44,8 @@ export function Demandes(props) {
   }
   return (
     <Layout>
-      <Header className='header'>
-        <MenuBar
-          name1='Logout'
-          page1='/login'
-          name3='dashboard'
-          page3='/dashboard'
-        />
-      </Header>
+      <MenuBar />
+      <Header className='header'></Header>
       <Layout>
         <Subnav />
 

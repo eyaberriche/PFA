@@ -8,6 +8,7 @@ import {
   categoryByid,
 } from "../../services/visitorServices/categorie";
 import { ThreeCircles } from "react-loader-spinner";
+import { getCurrentUser, logout } from "../../services/visitorServices/auth";
 
 function FreelancersPage(props) {
   const { categorieId } = useParams();
@@ -41,8 +42,7 @@ function FreelancersPage(props) {
 
   return (
     <Layout className='layout'>
-      <MenuBar name1='Se Connecter' page1='/login' />
-
+      <MenuBar />
       <Layout>
         <Categories />
         <Layout style={{ padding: "0 24px 24px" }}>

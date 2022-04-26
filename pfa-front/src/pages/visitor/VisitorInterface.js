@@ -40,8 +40,7 @@ function VisitorInterface(props) {
   return (
     <div>
       <Layout className='layout'>
-        <MenuBar name1='Se Connecter' page1='/login' />
-
+        <MenuBar />
         <Layout>
           <Categories />
           <Layout style={{ padding: "0 24px 24px" }}>

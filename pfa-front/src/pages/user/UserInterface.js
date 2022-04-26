@@ -6,12 +6,7 @@ function UserInterface(props) {
   return (
     <div>
       <Layout className='layout'>
-        <MenuBar
-          name1='Logout'
-          page1='/login'
-          name3='dashboard'
-          page3='/dashboard'
-        />
+        <MenuBar />
       </Layout>
       <Layout>
         <p>welcome to home page</p>

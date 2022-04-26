@@ -13,13 +13,7 @@ export function Dashboard(props) {
   return (
     <>
       <Layout>
-        <MenuBar
-          name1='Logout'
-          page1='/login'
-          name3='dashboard'
-          page3='/dashboard'
-        />
-
+        <MenuBar />
         <Layout>
           <Subnav />
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import $ from "jquery";
+
 import { Form, Button, Input, Row, Col, Layout, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "../../components/constants/styles/form.css";
@@ -11,6 +11,8 @@ import { login } from "../../services/visitorServices/auth";
 
 function Login(props) {
   const history = useNavigate();
+  const [form] = Form.useForm();
+
   const { Content, Header } = Layout;
   const [data, setData] = useState({
     email: "",
@@ -24,11 +26,11 @@ function Login(props) {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       setData({ ...data, error: null });
       await login(email, password);
+
       history("/");
     } catch (err) {
       setData({ ...data, error: err.response.data.msg });
@@ -84,7 +86,9 @@ function Login(props) {
                   <h4 style={{ color: "white" }}> Se connecter </h4>
                 </Typography>
                 <Form
-                  autoComplete='off'
+                  form={form}
+                  onFinish={handleSubmit}
+                  name='control-hooks'
                   labelCol={{ span: 6 }}
                   wrapperCol={{ span: 14 }}
                 >
@@ -131,6 +135,7 @@ function Login(props) {
                       value={password}
                       onChange={handleChange}
                       placeholder='Tapez votre mot de passe '
+                      autoComplete='password'
                     />
                   </Form.Item>
                   {error ? (
@@ -144,7 +149,6 @@ function Login(props) {
                       block
                       type='primary'
                       htmlType='submit'
-                      onClick={handleSubmit}
                     >
                       Se connecter
                     </Button>

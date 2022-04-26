@@ -19,15 +19,22 @@ export const login = async (email, password) => {
     }
   );
   localStorage.setItem("token", res.data.token);
-  localStorage.setItem("user", res.data.user);
+  //localStorage.setItem("user", res.data.user);
   console.log(res.data.token);
   console.log(res.data.user);
   return res.data.token;
 };
 export const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("token");
 };
-export const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+export const getCurrentUser = async () => {
+  const res = await axios.get("http://localhost:5000/freelancer/currentUser", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  return res.data;
 };
+
 // eslint-disable-next-line import/no-anonymous-default-export
