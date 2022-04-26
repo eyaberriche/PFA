@@ -24,5 +24,11 @@ router.get(
   jsonParser,
   apiController.allUsersByCategory
 );
+router.get(
+  "/currentUser",
+  jsonParser,
+
+  apiController.currentUser
+);
 
 module.exports = router;

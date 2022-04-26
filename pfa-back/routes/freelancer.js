@@ -31,11 +31,5 @@ router.post(
   [auth.verifyToken, auth.isUser],
   freelancerController.todoservices
 );
-router.get(
-  "/currentUser",
-  jsonParser,
-  [auth.verifyToken],
-  freelancerController.currentUser
-);
 
 module.exports = router;

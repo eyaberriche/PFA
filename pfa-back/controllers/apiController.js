@@ -128,3 +128,13 @@ exports.allUsersByCategory = async (req, res) => {
     }, 550);
   });
 };
+//get current user
+exports.currentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    res.json(user);
+  } catch (error) {
+    // console.log(err);
+    return res.json({ msg: err.message });
+  }
+};

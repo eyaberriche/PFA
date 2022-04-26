@@ -9,13 +9,11 @@ function Categories(props) {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    getCategories();
+    allCatgeories().then((response) => {
+      setCategories(response);
+    });
   }, []);
-  const getCategories = async () => {
-    const result = await allCatgeories();
 
-    setCategories(result);
-  };
   const navigationLink = (c) => {
     navigate(`/categories/view/${c}`);
   };

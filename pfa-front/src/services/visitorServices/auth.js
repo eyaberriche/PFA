@@ -28,7 +28,7 @@ export const logout = () => {
   localStorage.removeItem("token");
 };
 export const getCurrentUser = async () => {
-  const res = await axios.get("http://localhost:5000/freelancer/currentUser", {
+  const res = await axios.get(API_URL + "currentUser", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
