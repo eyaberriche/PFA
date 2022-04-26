@@ -17,6 +17,8 @@ router.post(
 );
 
 router.get("/category/all", jsonParser, apiController.allCategories);
+
+router.get("/category/:id", jsonParser, apiController.categoryById);
 router.get(
   "/category/freelancers/:id",
   jsonParser,

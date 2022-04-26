@@ -36,3 +36,13 @@ exports.todoservices = async (req, res) => {
     res.send(todo);
   });
 };
+//get current user
+exports.currentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    res.json(user);
+  } catch (error) {
+    // console.log(err);
+    return res.status(400).json({ msg: err.message });
+  }
+};

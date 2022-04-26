@@ -47,10 +47,12 @@ exports.logIn = (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) {
       console.log(err);
-      res.json({ msg: "Somthing went wrong" });
+      res.status(400).json({ msg: "Somthing went wrong" });
     } else {
       if (!user) {
-        res.json({ msg: "Invalid Email!!" });
+        res
+          .status(400)
+          .json({ msg: "L'email ou le mot de passe est invalide !" });
       } else {
         bcrypt
           .compare(req.body.password, user.password)
@@ -64,18 +66,18 @@ exports.logIn = (req, res) => {
                 role: user.role,
               };
               let token = jwt.sign(payload, "secretkey");
-              res.status(200).send({
+              res.status(200).json({
                 token: token,
                 user,
               });
             } else {
               console.log("incoreect passss");
-              res.json({ msg: "Incorrect password!!" });
+              res.status(400).json({ msg: "Le mot de passe est incorrect" });
             }
           })
           .catch((err) => {
             console.log(err);
-            res.json({ msg: "mochkla" });
+            res.status(400).json({ msg: "mochkla" });
           });
       }
     }
@@ -94,6 +96,12 @@ exports.createCategroy = async (req, res) => {
 exports.allCategories = async (req, res) => {
   await Category.find({}, function (err, categories) {
     res.send(categories);
+  }).clone();
+};
+//get category by id
+exports.categoryById = async (req, res) => {
+  await Category.find({ _id: req.params.id }, function (err, category) {
+    res.send(category);
   }).clone();
 };
 exports.allUsersByCategory = async (req, res) => {
@@ -117,6 +125,6 @@ exports.allUsersByCategory = async (req, res) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(res.send(users));
-    }, 500);
+    }, 550);
   });
 };
