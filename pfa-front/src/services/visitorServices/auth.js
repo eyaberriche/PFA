@@ -27,14 +27,17 @@ export const login = async (email, password) => {
 export const logout = () => {
   localStorage.removeItem("token");
 };
+
 export const getCurrentUser = async () => {
-  const res = await axios.get(API_URL + "currentUser", {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-
-  return res.data;
+  try {
+    const res = await axios.get(API_URL + "currentUser", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return res.data.user;
+  } catch (error) {
+    return null;
+  }
 };
-
 // eslint-disable-next-line import/no-anonymous-default-export

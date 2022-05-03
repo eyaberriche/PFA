@@ -27,7 +27,7 @@ router.get(
 router.get(
   "/currentUser",
   jsonParser,
-
+  [authJwt.verifyToken],
   apiController.currentUser
 );
 

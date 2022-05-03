@@ -28,19 +28,12 @@ let userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    cv: {
-      type: mongoose.Schema.Types.Mixed,
-    },
 
     picture: {
       data: Buffer,
       contentType: String,
     },
-    competences: [{ type: mongoose.Schema.Types.ObjectId, ref: "competence" }],
-    servicesTodo: [{ type: mongoose.Schema.Types.ObjectId, ref: "service" }],
-    servicesRequested: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "service" },
-    ],
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "category" },
   },
   { timestamp: true }
 );

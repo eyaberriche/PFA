@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 5000;
-var cors = require('cors')
+var cors = require("cors");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 //environment variables
@@ -12,15 +12,15 @@ var apiRoutes = require("./routes/api");
 var freelancerRoutes = require("./routes/freelancer");
 var customerRoutes = require("./routes/customer");
 
-//database
-mongoose.connect(
-  process.env.DB_CONECTION_STRING,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  (res, req) => {
-    console.log("Connected Database Successfully");
-  }
-);
-app.use(cors())
+const connectToMongo = async () => {
+  await mongoose.connect(process.env.DB_CONECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  return mongoose;
+};
+connectToMongo().then(async () => console.log("connected yeee"));
+app.use(cors());
 // use all routes
 app.use("/", apiRoutes);
 app.use("/freelancer", freelancerRoutes);

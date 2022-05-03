@@ -14,21 +14,6 @@ router.post(
   customerController.createService
 );
 
-//enregistrer service
-router.post(
-  "/service/save/:id",
-  jsonParser,
-  [authJwt.verifyToken, authJwt.isUser],
-  customerController.enregistrerService
-);
-
-//envoyer service déja enregistré
-router.get(
-  "/service/send/:id",
-  jsonParser,
-  [authJwt.verifyToken, authJwt.isUser],
-  customerController.envoyerService
-);
 //afficher mes demandes
 router.get(
   "/service/Requested",

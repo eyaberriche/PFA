@@ -5,57 +5,32 @@ var User = require("../models/user");
 //ajouter service et enovyer
 exports.createService = async (req, res) => {
   const customer = await User.findById(req.userId);
-  const freelancer = await User.findOne({ _id: req.params.id });
+  const freelancer = await User.findOne({ _id: req.body.freelancer });
 
   let service = new Services({
     name: req.body.name,
     creationDate: req.body.creationDate,
     customer: customer._id,
+    namecostumer: customer.firstname + " " + customer.lastname,
+    namefreelancer: freelancer.firstname + " " + freelancer.lastname,
     freelancer: freelancer._id,
     finalDate: req.body.finalDate,
     price: req.body.price,
   });
   console.log(service);
   await service.save();
-  customer.servicesRequested.push(service);
-  await customer.save();
-  freelancer.servicesTodo.push(service);
-  await freelancer.save();
-  return res.json({ service });
-};
-//enregistrer service khw
-exports.enregistrerService = async (req, res) => {
-  const customer = await User.findById(req.userId);
-  const freelancer = await User.findOne({ _id: req.params.id });
 
-  let service = new Services({
-    name: req.body.name,
-    creationDate: req.body.creationDate,
-    customer: customer._id,
-    freelancer: freelancer._id,
-    finalDate: req.body.finalDate,
-    price: req.body.price,
-  });
-  console.log(service);
-  await service.save();
-  customer.servicesRequested.push(service);
   await customer.save();
-  return res.json({ service });
-};
-//envoyer un service
-exports.envoyerService = async (req, res) => {
-  const service = await Services.findOne({ _id: req.params.id });
-  const freelancer = await User.findOne({ _id: service.freelancer });
-  freelancer.servicesTodo.push(service);
+
   await freelancer.save();
-  return res.json({ freelancer });
+  return res.json({ service });
 };
 
 //afficher mes demandes
 exports.demandesServices = async (req, res) => {
   const customer = await User.findOne({ _id: req.userId });
   Services.find({ customer: customer._id }, function (err, services) {
-    res.send(services);
+    res.json({ services });
   });
 };
 
@@ -98,4 +73,3 @@ exports.updateService = async (req, res) => {
       });
     });
 };
-

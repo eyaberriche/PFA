@@ -11,10 +11,7 @@ let compSchema = new Schema({
     type: String,
     required: true,
   },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "category",
-  },
+
   freelancer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",

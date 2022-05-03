@@ -7,15 +7,13 @@ var Services = require("../models/service");
 // creation d'une competence
 exports.createCompetence = async (req, res) => {
   const freelancer = await User.findOne({ _id: req.body.freelancer });
-  const category = await Category.findOne({ _id: req.body.category });
   let competence = new Competence({
     name: req.body.name,
     experience: req.body.experience,
     freelancer: freelancer._id,
-    category: category._id,
   });
   await competence.save();
-  freelancer.competences.push(competence);
+
   await freelancer.save();
   return res.json({ competence });
 };
@@ -24,7 +22,7 @@ exports.createCompetence = async (req, res) => {
 exports.allComptences = async (req, res) => {
   const freelancer = await User.findOne({ _id: req.params.id });
   Competence.find({ freelancer: freelancer._id }, function (err, competences) {
-    res.send(competences);
+    res.json(competences);
   });
 };
 
@@ -32,7 +30,7 @@ exports.allComptences = async (req, res) => {
 
 exports.todoservices = async (req, res) => {
   const freelancer = await User.findOne({ _id: req.userId });
-  Services.find({ freelancer: freelancer._id }, function (err, todo) {
-    res.send(todo);
+  Services.find({ freelancer: freelancer._id }, function (err, services) {
+    res.json({ services });
   });
 };

@@ -105,34 +105,17 @@ exports.categoryById = async (req, res) => {
   }).clone();
 };
 exports.allUsersByCategory = async (req, res) => {
-  const category = await Category.findById(req.params.id).clone();
-  var users = [];
-  Competence.find(
-    { category: category._id },
-    async function (err, competences) {
-      competences.forEach(async function (competence) {
-        const user = await User.findOne({ _id: competence.freelancer }).clone();
-        // console.log(user);
-        users.push(user);
-      });
-    }
-  )
-    .clone()
-    .catch(function (err) {
-      console.log(err);
-    });
+  const category = await Category.findById(req.params.id);
 
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(res.send(users));
-    }, 550);
+  await User.find({ category: category._id }, function (err, users) {
+    res.json(users);
   });
 };
 //get current user
 exports.currentUser = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    res.json(user);
+    res.json({ user: user });
   } catch (error) {
     // console.log(err);
     return res.json({ msg: err.message });

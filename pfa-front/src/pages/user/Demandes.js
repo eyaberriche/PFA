@@ -45,7 +45,7 @@ export function Demandes(props) {
   return (
     <Layout>
       <MenuBar />
-      <Header className='header'></Header>
+
       <Layout>
         <Subnav />
 

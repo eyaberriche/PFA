@@ -22,10 +22,7 @@ let serviceSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  sended: {
-    type: Boolean,
-    default: false,
-  },
+
   freelancer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
