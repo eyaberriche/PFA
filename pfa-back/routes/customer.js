@@ -6,9 +6,9 @@ var authJwt = require("../middleware/auth");
 var jsonParser = bodyParser.json();
 const customerController = require("../controllers/customerController");
 
-//ajouter et envoyer service a la fois
+//ajouter service
 router.post(
-  "/service/create/:id",
+  "/service/create",
   jsonParser,
   [authJwt.verifyToken, authJwt.isUser],
   customerController.createService
@@ -16,7 +16,7 @@ router.post(
 
 //afficher mes demandes
 router.get(
-  "/service/Requested",
+  "/service/requested",
   jsonParser,
   [authJwt.verifyToken, authJwt.isUser],
   customerController.demandesServices

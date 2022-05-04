@@ -6,6 +6,10 @@ let serviceSchema = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
   creationDate: {
     type: Date,
     required: true,

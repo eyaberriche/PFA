@@ -5,14 +5,18 @@ const mongoose = require("mongoose");
 var Competence = require("../models/competence");
 var Category = require("../models/category");
 var bcrypt = require("bcrypt");
+const category = require("../models/category");
 
 exports.registerUser = async (req, res) => {
+  const category = await Category.findById(req.body.category);
   bcrypt.hash(req.body.password, 10).then((hash) => {
     var userr = new User({
       lastname: req.body.lastname,
       firstname: req.body.firstname,
       email: req.body.email,
       password: hash,
+      category: category._id,
+      tel: req.body.tel,
       role: "user",
     });
 

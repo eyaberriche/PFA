@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Layout, Pagination, Row, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Layout,
+  Pagination,
+  Row,
+  Form,
+  Modal,
+  Typography,
+} from "antd";
 import MenuBar from "../../components/MenuBar";
 import Categories from "../../components/Categories";
 import { useParams } from "react-router-dom";
@@ -8,106 +18,232 @@ import {
   categoryByid,
 } from "../../services/visitorServices/categorie";
 import { ThreeCircles } from "react-loader-spinner";
-import { getCurrentUser, logout } from "../../services/visitorServices/auth";
+import { getCurrentUser } from "../../services/visitorServices/auth";
+import { createService } from "../../services/userServices/services";
+import ModalService from "../../components/ModalService";
 
 function FreelancersPage(props) {
   const { categorieId } = useParams();
-  const cat = {
-    _id: "",
-    name: "",
-    __v: 0,
-  };
+
   const [freelancers, setFreelancers] = useState([]);
+  const [freelancer, setFreelancer] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState(cat);
+  const [category, setCategory] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
+  const [isUser, setIsUser] = useState(false);
+  const [initial, setInitial] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [form] = Form.useForm();
+
+  const [addedService, setaddedService] = useState({
+    name: "",
+    creationDate: "",
+    finalDate: "",
+    price: "",
+    description: "",
+  });
 
   useEffect(() => {
-    getFreelancers(categorieId);
-    getCategory(categorieId);
-    setLoading(false);
+    getCurrentUser().then((response) => {
+      setCurrentUser(response);
+      if (response.role === "user") {
+        setIsUser(true);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const result = await categoryByid(categorieId);
+
+        setCategory(result);
+
+        const res = await allFreelancersBycateg(categorieId);
+
+        setFreelancers(res);
+        //alert(JSON.stringify(freelancers));
+
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [categorieId]);
-
-  const getCategory = async (idc) => {
-    const result = await categoryByid(idc);
-
-    setCategory(result);
-  };
-
-  const getFreelancers = async (idd) => {
-    const result = await allFreelancersBycateg(idd);
-
-    setFreelancers(result);
-  };
-  let data = [
-    { title: "Card title1", value: "Card content1" },
-    { title: "Card title2", value: "Card content2" },
-    { title: "Card title3", value: "Card content3" },
-    { title: "Card title4", value: "Card content4" },
-    { title: "Card title5", value: "Card content5" },
-    { title: "Card title6", value: "Card content6" },
-    { title: "Card title7", value: "Card content7" },
-    { title: "Card title8", value: "Card content8" },
-    { title: "Card title9", value: "Card content9" },
-    { title: "Card title10", value: "Card content10" },
-    { title: "Card title11", value: "Card content11" },
-    { title: "Card title12", value: "Card content12" },
-    { title: "Card title13", value: "Card content13" },
-    { title: "Card title14", value: "Card content14" },
-    { title: "Card title15", value: "Card content15" },
-  ];
 
   const [minValue, setminValue] = useState(0);
 
-  const [maxValue, setmaxValue] = useState(6);
+  const [maxValue, setmaxValue] = useState(3);
+  const onAddService = (freelancer) => {
+    setFreelancer(freelancer._id);
+    setIsAdding(true);
+    setInitial({
+      name: "",
+      creationDate: "",
+      finalDate: "",
+      price: "",
+      description: "",
+    });
+    setFreelancer(freelancer);
+  };
+  const handleChangeAdd = (e) => {
+    setaddedService({
+      ...addedService,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleChangeAddDate = (e) => {
+    setaddedService({
+      ...addedService,
+
+      creationDate: e[0].format(),
+      finalDate: e[1].format(),
+    });
+  };
+
+  const resetAdding = () => {
+    setInitial(null);
+    setIsAdding(false);
+    setFreelancer(null);
+  };
 
   const handleChange = (value) => {
     if (value <= 1) {
       setminValue(0);
-      setmaxValue(6);
+      setmaxValue(3);
     } else {
       setminValue(maxValue);
-      setmaxValue(value * 6);
+      setmaxValue(value * 3);
+    }
+  };
+  const add = async () => {
+    try {
+      setLoading(true);
+      await createService(freelancer._id, addedService);
+      //setaddedService(addedService);
+      // alert(JSON.stringify(addedService) + "" + freelancer._id);
+      resetAdding();
+      setLoading(false);
+      //alert("sr ajouté");
+    } catch (e) {
+      console.log(e);
     }
   };
   return (
     <div>
       <Layout className='layout'>
         <MenuBar />
-        <Layout>
+        <Layout style={{ minHeight: "2000px" }}>
           <Categories />
           <Layout style={{ padding: "0 24px 24px" }}>
-            <Typography.Title style={{ margin: 20 }}>
-              Bienvenue
-            </Typography.Title>
-            <div>
-              {" "}
-              <Row gutter={16}>
-                {data &&
-                  data.length > 0 &&
-                  data.slice(minValue, maxValue).map((val) => (
-                    <Col span={8}>
-                      <p></p>
-                      <div>
-                        <Card
-                          title={val.title}
-                          extra={<a href='#'>More</a>}
-                          style={{ width: 300 }}
-                        >
-                          <p>{val.value}</p>
-                        </Card>
-                      </div>
-                    </Col>
-                  ))}
-                <p>
-                  <Pagination
-                    defaultCurrent={1}
-                    defaultPageSize={6}
-                    onChange={handleChange}
-                    total={15}
+            {!loading ? (
+              <>
+                {" "}
+                <Typography.Title style={{ margin: 20 }}>
+                  Catégorie {category.name}
+                </Typography.Title>
+                <div>
+                  <Row gutter={16}>
+                    {freelancers &&
+                      freelancers.slice(minValue, maxValue).map((val) => (
+                        <Col span={8}>
+                          <p></p>
+                          <div>
+                            <Card
+                              title='Freelancer '
+                              extra={
+                                <a href='#'>
+                                  <Button
+                                    type='primary'
+                                    style={{ backgroundColor: "violet" }}
+                                  >
+                                    Détails
+                                  </Button>
+                                </a>
+                              }
+                              style={{ width: 320, minHeight: "400px" }}
+                            >
+                              <p>
+                                Nom et prénom : {val.firstname} {val.lastname}
+                              </p>
+                              <p> Email : {val.email}</p>
+                              <p>{val.tel}</p>
+                              <p>Compétences : </p>
+                              <ul>
+                                {val.skills.map((skill) => (
+                                  <li>{skill}</li>
+                                ))}
+                              </ul>
+                              {isUser && (
+                                <Button
+                                  type='primary'
+                                  block
+                                  style={{
+                                    backgroundColor: "violet",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "10px 30px",
+                                    fontSize: "1em",
+                                    fontWeight: "50px",
+                                    minHeight: "45px",
+                                    minWidth: "45px",
+                                  }}
+                                  onClick={() => onAddService(val)}
+                                >
+                                  Ajouter un Service à {val.firstname}
+                                </Button>
+                              )}
+                            </Card>
+                            {isAdding && (
+                              <Modal
+                                title='Ajouter un service '
+                                visible={isAdding}
+                                okText='Ajouter'
+                                onCancel={() => {
+                                  resetAdding();
+                                }}
+                                onOk={form.submit}
+                              >
+                                <ModalService
+                                  Obj={addedService}
+                                  changeev={handleChangeAdd}
+                                  changeev2={handleChangeAddDate}
+                                  finish={add}
+                                  form={form}
+                                  initial={initial}
+                                ></ModalService>
+                              </Modal>
+                            )}
+                          </div>
+                        </Col>
+                      ))}
+                    <p>
+                      <Pagination
+                        defaultCurrent={1}
+                        defaultPageSize={3}
+                        onChange={handleChange}
+                        total={freelancers.length}
+                      />
+                    </p>
+                  </Row>
+                </div>
+              </>
+            ) : (
+              <Row style={{ marginTop: "200px" }} type='flex' justify='center'>
+                <Col offset={6} span={12}>
+                  <ThreeCircles
+                    color='violet'
+                    height={150}
+                    width={150}
+                    ariaLabel='three-circles-rotating'
                   />
-                </p>
+                </Col>
               </Row>
-            </div>
+            )}
           </Layout>
         </Layout>
       </Layout>

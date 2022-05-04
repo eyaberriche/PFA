@@ -18,7 +18,7 @@ function MenuBar(props) {
       setCurrentUser(response);
     });
   }, []);
-  console.log(currentUser);
+
   const logOut = () => {
     logout();
   };
@@ -34,7 +34,7 @@ function MenuBar(props) {
         {currentUser ? (
           <>
             <Menu.Item key='4'>
-              <Link to='/dashboard'>
+              <Link to='/demandes'>
                 <BarsOutlined style={{ fontSize: "23px" }} />
               </Link>
             </Menu.Item>
@@ -46,7 +46,9 @@ function MenuBar(props) {
           </>
         ) : (
           <Menu.Item key='5'>
-            <Link to='/login'>Login</Link>
+            <Link to='/login'>
+              <LogoutOutlined style={{ fontSize: "23px" }} />
+            </Link>
           </Menu.Item>
         )}
       </Menu>

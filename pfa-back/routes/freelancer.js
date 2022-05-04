@@ -8,25 +8,17 @@ const freelancerController = require("../controllers/freelancerController");
 
 const auth = require("../middleware/auth");
 
-//create competence
-router.post(
-  "/competences/create",
+//confirm service
+router.put(
+  "/service/confirm/:id",
   jsonParser,
   [auth.verifyToken, auth.isUser],
-  freelancerController.createCompetence
-);
-
-//all competences
-router.post(
-  "/competences",
-  jsonParser,
-  [auth.verifyToken, auth.isUser],
-  freelancerController.allComptences
+  freelancerController.confirmService
 );
 
 //afficher mes todos services
 router.post(
-  "/servicesTodo",
+  "/service/todo",
   jsonParser,
   [auth.verifyToken, auth.isUser],
   freelancerController.todoservices

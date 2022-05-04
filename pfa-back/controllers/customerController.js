@@ -1,5 +1,5 @@
 // crud mtaa liste eli demanda fehom client + envoi etc
-var Services = require("../models/service");
+var Service = require("../models/service");
 var User = require("../models/user");
 
 //ajouter service et enovyer
@@ -7,7 +7,7 @@ exports.createService = async (req, res) => {
   const customer = await User.findById(req.userId);
   const freelancer = await User.findOne({ _id: req.body.freelancer });
 
-  let service = new Services({
+  let service = new Service({
     name: req.body.name,
     creationDate: req.body.creationDate,
     customer: customer._id,
@@ -15,6 +15,7 @@ exports.createService = async (req, res) => {
     namefreelancer: freelancer.firstname + " " + freelancer.lastname,
     freelancer: freelancer._id,
     finalDate: req.body.finalDate,
+    description: req.body.description,
     price: req.body.price,
   });
   console.log(service);
@@ -29,29 +30,29 @@ exports.createService = async (req, res) => {
 //afficher mes demandes
 exports.demandesServices = async (req, res) => {
   const customer = await User.findOne({ _id: req.userId });
-  Services.find({ customer: customer._id }, function (err, services) {
+  Service.find({ customer: customer._id }, function (err, services) {
     res.json({ services });
   });
 };
 
 //supprimer un service
 exports.deleteService = (req, res) => {
-  Services.deleteOne({ _id: req.params.id })
-    .then(() => {
-      res.status(200).json({
-        message: "Deleted!",
-      });
-    })
-    .catch((error) => {
+  Service.findOneAndDelete({ _id: req.params.id }, function (err, service) {
+    if (err) {
       res.status(400).json({
-        error: error,
+        error: err,
       });
-    });
+    } else {
+      res.status(200).json({
+        service,
+      });
+    }
+  });
 };
 
 //modifier ses services
 exports.updateService = async (req, res) => {
-  Services.updateOne(
+  Service.findOneAndUpdate(
     { _id: req.params.id },
     {
       $set: {
@@ -60,16 +61,14 @@ exports.updateService = async (req, res) => {
         finalDate: req.body.finalDate,
         price: req.body.price,
       },
+    },
+    function (err, service) {
+      if (err) {
+        res.status(400).json({ msg: "Something wrong when updating data!" });
+      } else {
+        res.json({ service });
+        console.log(service);
+      }
     }
-  )
-    .then(() => {
-      res.status(201).json({
-        message: "updated successfully!",
-      });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
+  );
 };

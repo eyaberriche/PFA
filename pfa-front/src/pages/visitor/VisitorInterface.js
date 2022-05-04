@@ -10,7 +10,11 @@ function VisitorInterface(props) {
     <div>
       <Layout className='layout'>
         <MenuBar />
-        <Layout>
+        <Layout
+          style={{
+            minHeight: 690,
+          }}
+        >
           <Categories />
           <Layout style={{ padding: "0 4px 4px" }}>
             <Content
