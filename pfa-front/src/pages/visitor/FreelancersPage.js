@@ -27,12 +27,14 @@ function FreelancersPage(props) {
 
   const [freelancers, setFreelancers] = useState([]);
   const [freelancer, setFreelancer] = useState(null);
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [isUser, setIsUser] = useState(false);
   const [initial, setInitial] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [details, setDetails] = useState(false);
   const [form] = Form.useForm();
 
   const [addedService, setaddedService] = useState({
@@ -111,6 +113,10 @@ function FreelancersPage(props) {
     setFreelancer(null);
   };
 
+  const resetDetails = () => {
+    setDetails(false);
+    setUser(null);
+  };
   const handleChange = (value) => {
     if (value <= 1) {
       setminValue(0);
@@ -119,6 +125,11 @@ function FreelancersPage(props) {
       setminValue(maxValue);
       setmaxValue(value * 3);
     }
+  };
+  const onDetailsFreelancer = (free) => {
+    setDetails(true);
+    setUser(free);
+    //alert(JSON.stringify(free));
   };
   const add = async () => {
     try {
@@ -160,18 +171,18 @@ function FreelancersPage(props) {
                                   <Button
                                     type='primary'
                                     style={{ backgroundColor: "violet" }}
+                                    onClick={() => onDetailsFreelancer(val)}
                                   >
                                     Détails
                                   </Button>
                                 </a>
                               }
-                              style={{ width: 320, minHeight: "400px" }}
+                              style={{ width: 320, minHeight: "200px" }}
                             >
                               <p>
                                 Nom et prénom : {val.firstname} {val.lastname}
                               </p>
-                              <p> Email : {val.email}</p>
-                              <p>{val.tel}</p>
+
                               <p>Compétences : </p>
                               <ul>
                                 {val.skills.map((skill) => (
@@ -216,6 +227,32 @@ function FreelancersPage(props) {
                                   form={form}
                                   initial={initial}
                                 ></ModalService>
+                              </Modal>
+                            )}
+                            {details && (
+                              <Modal
+                                title='Details du freelancer'
+                                visible={details}
+                                okText='ok'
+                                onCancel={() => {
+                                  resetDetails();
+                                }}
+                                onOk={() => {
+                                  resetDetails();
+                                }}
+                              >
+                                <p>
+                                  Nom et prénom : {user.firstname}{" "}
+                                  {user.lastname}
+                                </p>
+                                <p> Email : {user.email}</p>
+                                <p>Téléphone {user.tel}</p>
+                                <p>Compétences : </p>
+                                <ul>
+                                  {user.skills.map((skill) => (
+                                    <li>{skill}</li>
+                                  ))}
+                                </ul>
                               </Modal>
                             )}
                           </div>

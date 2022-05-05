@@ -17,7 +17,7 @@ router.put(
 );
 
 //afficher mes todos services
-router.post(
+router.get(
   "/service/todo",
   jsonParser,
   [auth.verifyToken, auth.isUser],

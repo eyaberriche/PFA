@@ -55,7 +55,7 @@ export const getRequestedServices = async () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
-  return result.services;
+  return result.data.services;
 };
 //freelancer
 export const getTodoServices = async () => {
@@ -64,7 +64,7 @@ export const getTodoServices = async () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
-  return result.services;
+  return result.data.services;
 };
 export const confirmService = async (id) => {
   const res = await axios.put(

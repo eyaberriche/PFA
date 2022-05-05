@@ -35,6 +35,12 @@ let serviceSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
+  emailcustomer: {
+    type: String,
+  },
+  emailfreelancer: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("service", serviceSchema);

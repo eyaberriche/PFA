@@ -38,6 +38,12 @@ function MenuBar(props) {
                 <BarsOutlined style={{ fontSize: "23px" }} />
               </Link>
             </Menu.Item>
+            <Menu.Item key='4'>
+              <Link to='/demandes'>
+                {currentUser.firstname} {currentUser.lastname}
+              </Link>
+            </Menu.Item>
+
             <Menu.Item key='3'>
               <Link to='/login' onClick={logOut}>
                 <LogoutOutlined style={{ fontSize: "23px" }} />
