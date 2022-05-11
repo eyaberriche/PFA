@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
 
 import {
   Button,
@@ -19,14 +20,61 @@ import {
   deleteService,
   getTodoServices,
 } from "../../services/userServices/services";
-
+import ServiceStore from "../../artifacts/contracts/ServiceStore.sol/ServiceStore.json";
 export function Services(props) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [EditingService, setEditingService] = useState(null);
+  const [cservices, setCServices] = useState([]);
+  const [confirmedService, setconfirmedService] = useState({
+    name: "",
+    description: "",
+    date: "",
+    emailcustomer: "",
+    emailfreelancer: "",
+    price: "",
+  });
+  const [contract, setContract] = useState();
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const [services, setservices] = useState([]);
+  async function requestAccount() {
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+  }
+  const registerService = async (record) => {
+    const datee =
+      new Date(record.creationDate).toISOString().substring(0, 10) +
+      "  " +
+      new Date(record.finalDate).toISOString().substring(0, 10);
+
+    // If MetaMask exists
+    if (typeof window.ethereum !== "undefined") {
+      await requestAccount();
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      const contract = new ethers.Contract(
+        contractAddress,
+        ServiceStore.abi,
+        signer
+      );
+
+      const transaction = await contract.registerService(
+        record.name,
+        record.emailcustomer,
+        record.emailfreelancer,
+        record.price,
+        record.description,
+        datee
+      );
+
+      await transaction.wait();
+      //fetchServices();
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -96,7 +144,10 @@ export function Services(props) {
             >
               Confirmer{" "}
             </Button>
-            <Button onClick={() => {}} style={{ marginLeft: 12 }}>
+            <Button
+              onClick={() => registerService(record)}
+              style={{ marginLeft: 12 }}
+            >
               Details
             </Button>
           </>
@@ -104,6 +155,7 @@ export function Services(props) {
       },
     },
   ];
+
   const onConfirmService = (record) => {
     Modal.confirm({
       title: `Confirmer la demande du service ${record.name}?`,

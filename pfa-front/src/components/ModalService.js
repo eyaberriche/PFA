@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input } from "antd";
+import { ConfigProvider, DatePicker, Form, Input } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React from "react";
 
@@ -33,16 +33,13 @@ function ModalService({ initial, form, finish, Obj, changeev, changeev2 }) {
 
       <Form.Item
         name='price'
-        label='Prix'
+        label='Prix en $'
         rules={[
           {
             pattern: /^(?:\d*)$/,
             message: "Il faut qu'un nombre",
           },
-          {
-            pattern: /^[\d]{0,8}$/,
-            message: "Il faut d'etre moins de 8 chiffres",
-          },
+
           { required: true, message: "Prix manquant" },
         ]}
         validateTrigger='onBlur'
@@ -69,8 +66,7 @@ function ModalService({ initial, form, finish, Obj, changeev, changeev2 }) {
           value={Obj.description}
           name='description'
           rows={4}
-          placeholder='maxLength is 6'
-          maxLength={20}
+          placeholder='description du service'
         />
       </Form.Item>
       <Form.Item

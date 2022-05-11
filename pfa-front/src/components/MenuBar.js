@@ -12,13 +12,19 @@ import axios from "axios";
 function MenuBar(props) {
   const { Header } = Layout;
   const [currentUser, setCurrentUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isUser, setIsUser] = useState(false);
 
   useEffect(() => {
     getCurrentUser().then((response) => {
       setCurrentUser(response);
+      if (response.role === "admin") {
+        setIsAdmin(true);
+      } else if (response.role === "user") {
+        setIsUser(true);
+      }
     });
   }, []);
-
   const logOut = () => {
     logout();
   };
@@ -31,14 +37,14 @@ function MenuBar(props) {
           </Link>
         </Menu.Item>
 
-        {currentUser ? (
+        {currentUser && isUser && (
           <>
-            <Menu.Item key='4'>
+            <Menu.Item key='44'>
               <Link to='/demandes'>
                 <BarsOutlined style={{ fontSize: "23px" }} />
               </Link>
             </Menu.Item>
-            <Menu.Item key='4'>
+            <Menu.Item key='40'>
               <Link to='/demandes'>
                 {currentUser.firstname} {currentUser.lastname}
               </Link>
@@ -50,8 +56,30 @@ function MenuBar(props) {
               </Link>
             </Menu.Item>
           </>
-        ) : (
-          <Menu.Item key='5'>
+        )}
+        {currentUser && isAdmin && (
+          <>
+            <Menu.Item key='51'>
+              <Link to='/dashboard'>Prestations</Link>
+            </Menu.Item>
+            <Menu.Item key='57'>
+              <Link to='/dashboard'>Gestion des donnés</Link>
+            </Menu.Item>
+            <Menu.Item key='4'>
+              <Link to='/dashboard'>
+                {currentUser.firstname} {currentUser.lastname}
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key='31'>
+              <Link to='/login' onClick={logOut}>
+                <LogoutOutlined style={{ fontSize: "23px" }} />
+              </Link>
+            </Menu.Item>
+          </>
+        )}
+        {!currentUser && (
+          <Menu.Item key='51'>
             <Link to='/login'>
               <LogoutOutlined style={{ fontSize: "23px" }} />
             </Link>
