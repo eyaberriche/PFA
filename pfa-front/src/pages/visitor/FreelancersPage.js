@@ -35,6 +35,7 @@ function FreelancersPage(props) {
   const [initial, setInitial] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [details, setDetails] = useState(false);
+
   const [form] = Form.useForm();
 
   const [addedService, setaddedService] = useState({
@@ -135,8 +136,6 @@ function FreelancersPage(props) {
     try {
       setLoading(true);
       await createService(freelancer._id, addedService);
-      //setaddedService(addedService);
-      // alert(JSON.stringify(addedService) + "" + freelancer._id);
       resetAdding();
       setLoading(false);
       //alert("sr ajouté");

@@ -19,9 +19,7 @@ export const login = async (email, password) => {
     }
   );
   localStorage.setItem("token", res.data.token);
-  //localStorage.setItem("user", res.data.user);
-  console.log(res.data.token);
-  console.log(res.data.user);
+
   return res.data.token;
 };
 export const logout = () => {

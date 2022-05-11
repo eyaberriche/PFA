@@ -25,6 +25,7 @@ export function Services(props) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [service, setService] = useState(null);
   const [error, setError] = useState(false);
   const [EditingService, setEditingService] = useState(null);
   const [cservices, setCServices] = useState([]);
@@ -37,6 +38,7 @@ export function Services(props) {
     price: "",
   });
   const [contract, setContract] = useState();
+  const [details, setDetails] = useState(false);
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const [services, setservices] = useState([]);
   async function requestAccount() {
@@ -49,32 +51,57 @@ export function Services(props) {
       new Date(record.finalDate).toISOString().substring(0, 10);
 
     // If MetaMask exists
-    if (typeof window.ethereum !== "undefined") {
-      await requestAccount();
+    try {
+      setLoading(true);
+      if (typeof window.ethereum !== "undefined") {
+        await requestAccount();
 
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(
-        contractAddress,
-        ServiceStore.abi,
-        signer
-      );
+        const contract = new ethers.Contract(
+          contractAddress,
+          ServiceStore.abi,
+          signer
+        );
 
-      const transaction = await contract.registerService(
-        record.name,
-        record.emailcustomer,
-        record.emailfreelancer,
-        record.price,
-        record.description,
-        datee
-      );
+        const transaction = await contract.registerService(
+          record.name,
+          record.emailcustomer,
+          record.emailfreelancer,
+          record.price,
+          record.description,
+          datee
+        );
 
-      await transaction.wait();
-      //fetchServices();
+        await transaction.wait();
+        await confirmService(record.id);
+        //record.confirmed = true;
+
+        setservices((pre) => {
+          return pre.map((location) => {
+            if (location.id === record.id) {
+              return { ...record, confirmed: true };
+            } else {
+              return location;
+            }
+          });
+        });
+        setLoading(false);
+      }
+    } catch (e) {
+      console.log("error");
     }
   };
-
+  const resetDetails = () => {
+    setDetails(false);
+    setService(null);
+  };
+  const onDetailsService = (service) => {
+    setDetails(true);
+    setService(service);
+    //alert(JSON.stringify(free));
+  };
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -138,14 +165,14 @@ export function Services(props) {
               type='primary'
               disabled={record.confirmed}
               onClick={() => {
-                onConfirmService(record);
+                registerService(record);
               }}
               style={{ marginLeft: 12 }}
             >
               Confirmer{" "}
             </Button>
             <Button
-              onClick={() => registerService(record)}
+              onClick={() => onDetailsService(record)}
               style={{ marginLeft: 12 }}
             >
               Details
@@ -155,35 +182,6 @@ export function Services(props) {
       },
     },
   ];
-
-  const onConfirmService = (record) => {
-    Modal.confirm({
-      title: `Confirmer la demande du service ${record.name}?`,
-      okText: "oui",
-      okType: "primary",
-      onOk: async () => {
-        try {
-          setLoading(true);
-
-          await confirmService(record.id);
-          //record.confirmed = true;
-
-          setservices((pre) => {
-            return pre.map((location) => {
-              if (location.id === record.id) {
-                return { ...record, confirmed: true };
-              } else {
-                return location;
-              }
-            });
-          });
-          setLoading(false);
-        } catch (e) {
-          console.log("error");
-        }
-      },
-    });
-  };
 
   return (
     <Layout>
@@ -212,6 +210,48 @@ export function Services(props) {
                 }}
                 bordered
               ></Table>
+              {details && (
+                <Modal
+                  title='Details du service'
+                  visible={details}
+                  okText='ok'
+                  onCancel={() => {
+                    resetDetails();
+                  }}
+                  onOk={() => {
+                    resetDetails();
+                  }}
+                >
+                  <p>
+                    <h4>Titre du service :</h4> {service.name}
+                  </p>
+                  <p>
+                    <h4>Date début : </h4>
+                    {new Date(service.creationDate)
+                      .toISOString()
+                      .substring(0, 10)}
+                  </p>
+                  <p>
+                    <h4>Date fin :</h4>{" "}
+                    {new Date(service.finalDate).toISOString().substring(0, 10)}
+                  </p>
+                  <p>
+                    {" "}
+                    <h4>Email du client :</h4> {service.emailcustomer}
+                  </p>
+                  <p>
+                    <h4>Email du freelancer :</h4> {service.emailfreelancer}
+                  </p>
+                  <p>
+                    {" "}
+                    <h4>Prix :</h4> {service.price}
+                  </p>
+                  <p>
+                    {" "}
+                    <h4>Description :</h4> {service.description}
+                  </p>
+                </Modal>
+              )}
             </>
           ) : (
             <Row style={{ marginTop: "200px" }} type='flex' justify='center'>

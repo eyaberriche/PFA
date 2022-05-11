@@ -30,6 +30,7 @@ export const updateService = async (id, service) => {
       creationDate: service.creationDate,
       finalDate: service.finalDate,
       price: service.price,
+      description: service.description,
     },
     {
       headers: {

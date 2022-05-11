@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Layout,
-  Modal,
-  Row,
-  Table,
-  Typography,
-} from "antd";
+import { Button, Col, Form, Layout, Modal, Row, Table, Typography } from "antd";
 
 import MenuBar from "../../components/MenuBar";
 import { Subnav } from "../../components/Subnav";
@@ -19,18 +9,23 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   deleteService,
   getRequestedServices,
+  updateService,
 } from "../../services/userServices/services";
 import { ThreeCircles } from "react-loader-spinner";
+import ModalService from "../../components/ModalService";
 
 export function Demandes(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [EditingService, setEditingService] = useState(null);
-
+  const [initial, setInitial] = useState(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [service, setService] = useState(null);
+  const [details, setDetails] = useState(false);
   const [services, setservices] = useState([]);
+  const [form] = Form.useForm();
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -116,19 +111,62 @@ export function Demandes(props) {
             >
               Supprimer
             </Button>
-            <Button style={{ marginLeft: 12 }}>Details</Button>
+            <Button
+              onClick={() => onDetailsService(record)}
+              style={{ marginLeft: 12 }}
+            >
+              Details
+            </Button>
           </>
         );
       },
     },
   ];
+  const resetDetails = () => {
+    setDetails(false);
+    setService(null);
+  };
+  const onDetailsService = (service) => {
+    setDetails(true);
+    setService(service);
+    //alert(JSON.stringify(free));
+  };
   const onEditService = (record) => {
     setIsEditing(true);
+    setInitial({
+      id: record.id,
+      name: record.name,
+      creationDate: record.creationDate,
+      finalDate: record.finalDate,
+      price: record.price,
+      description: record.description,
+    });
     setEditingService({ ...record });
   };
   const resetEditing = () => {
+    setInitial(null);
     setIsEditing(false);
     setEditingService(null);
+  };
+  const edit = async () => {
+    try {
+      setLoading(true);
+      await updateService(EditingService.id, EditingService);
+      resetEditing();
+      setLoading(false);
+      setservices((pre) => {
+        return pre.map((location) => {
+          if (location.id === EditingService.id) {
+            return EditingService;
+          } else {
+            return location;
+          }
+        });
+      });
+      //alert("sr ajouté");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onDeleteService = (record) => {
@@ -154,6 +192,14 @@ export function Demandes(props) {
     setEditingService({
       ...EditingService,
       [e.target.name]: e.target.value,
+    });
+  };
+  const handleChangeEditDate = (e) => {
+    setEditingService({
+      ...EditingService,
+
+      creationDate: e[0].format(),
+      finalDate: e[1].format(),
     });
   };
 
@@ -185,6 +231,68 @@ export function Demandes(props) {
                 }}
                 bordered
               ></Table>
+              {details && (
+                <Modal
+                  title='Details du service'
+                  visible={details}
+                  okText='ok'
+                  onCancel={() => {
+                    resetDetails();
+                  }}
+                  onOk={() => {
+                    resetDetails();
+                  }}
+                >
+                  <p>
+                    <h4>Titre du service :</h4> {service.name}
+                  </p>
+                  <p>
+                    <h4>Date début : </h4>
+                    {new Date(service.creationDate)
+                      .toISOString()
+                      .substring(0, 10)}
+                  </p>
+                  <p>
+                    <h4>Date fin :</h4>{" "}
+                    {new Date(service.finalDate).toISOString().substring(0, 10)}
+                  </p>
+                  <p>
+                    {" "}
+                    <h4>Email du client :</h4> {service.emailcustomer}
+                  </p>
+                  <p>
+                    <h4>Email du freelancer :</h4> {service.emailfreelancer}
+                  </p>
+                  <p>
+                    {" "}
+                    <h4>Prix :</h4> {service.price}
+                  </p>
+                  <p>
+                    {" "}
+                    <h4>Description :</h4> {service.description}
+                  </p>
+                </Modal>
+              )}
+              {isEditing && (
+                <Modal
+                  title='Modifier un service '
+                  visible={isEditing}
+                  okText='Modifier'
+                  onCancel={() => {
+                    resetEditing();
+                  }}
+                  onOk={form.submit}
+                >
+                  <ModalService
+                    Obj={EditingService}
+                    changeev={handleChangeEdit}
+                    changeev2={handleChangeEditDate}
+                    finish={edit}
+                    form={form}
+                    initial={initial}
+                  ></ModalService>
+                </Modal>
+              )}
             </>
           ) : (
             <Row style={{ marginTop: "200px" }} type='flex' justify='center'>
@@ -197,28 +305,6 @@ export function Demandes(props) {
                 />
               </Col>
             </Row>
-          )}
-          {isEditing && (
-            <Modal
-              title='Modifier serivce'
-              visible={isEditing}
-              okText='Enregistrer'
-              onCancel={() => {
-                resetEditing();
-              }}
-              onOk={() => {
-                setservices((pre) => {
-                  return pre.map((location) => {
-                    if (location.id === EditingService.id) {
-                      return EditingService;
-                    } else {
-                      return location;
-                    }
-                  });
-                });
-                resetEditing();
-              }}
-            ></Modal>
           )}
         </Layout>
       </Layout>
